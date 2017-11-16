@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Роман Назарук](https://up.htmlacademy.ru/javascript/11/user/143345).
-* Наставник: `Владислав Балабанович`.
+
 
 ---
 
