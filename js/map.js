@@ -1,8 +1,12 @@
+'use strict';
+var similarAdverts = [];
 var map = document.querySelector('.map');
-var flats = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде']
+var flats = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var types = ['flat', 'house', 'bungalo'];
 var facilities = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var times = ['12:00', '13:00', '14:00'];
+var mapPins = document.querySelector('.map__pins');
+var pinTemplate = document.querySelector('template').content.querySelector('.map__card');
 
 /**
  * Находим случайное число из диапазона
@@ -28,223 +32,40 @@ var randomArrayValue = function (array) {
 };
 
 /**
- * Выбираем из массива flats случайное значение
- * проверяем чтобы такого значения не было в объекте offer у ключа title
+ * Функция которая генерирует объект
  * @method
- * @return {[string]} [Возвращаем значение из массива]
+ * @return {[object]} [Типовой объект]
  */
-var randomTitle = function () {
-  for (var i = 0; i < similarAdverts.length; i++) {
-    var randomTitleValue = randomArrayValue(flats);
-    if (similarAdverts[i].offer.title == randomTitleValue) {
-      randomTitleValue = randomArrayValue(flats);
-    } else {
-      randomTitleValue = randomArrayValue(flats)
+var typicalObject = function () {
+  var someObject = {
+    'author': {
+      'avatar': 'img/avatars/user' + '0' + [i + 1] + '.png'
+    },
+
+    'offer': {
+      'title': flats[i],
+      'address': 'location.x, location.y',
+      'price': randomNumber(1000, 1000000),
+      'type': randomArrayValue(types),
+      'rooms': randomNumber(1, 5),
+      'guests': randomNumber(5, 50),
+      'checkin': randomArrayValue(times),
+      'checkout': randomArrayValue(times),
+      'features': randomArrayValue(facilities),
+      'description': '',
+      'photos': []
+    },
+
+    'location': {
+      'x': randomNumber(300, 900),
+      'y': randomNumber(100, 500)
     }
-    return randomTitleValue;
-  }
+  };
+  return someObject;
 };
 
-var similarAdverts = [
-  {
-      'author': {
-        'avatar': 'img/avatars/user' + '0' + randomNumber(1, 8) + '.png'
-      },
-
-      'offer': {
-        'title': randomTitle(),
-        'address': 'location.x, location.y',
-        'price': randomNumber(1000, 1000000),
-        'type': randomArrayValue(types),
-        'rooms': randomNumber(1, 5),
-        'guests': randomNumber(5, 50),
-        'checkin': randomArrayValue(times),
-        'checkout': randomArrayValue(times),
-        'features': randomArrayValue(facilities),
-        'description': '',
-        'photos': []
-      },
-
-      'location': {
-        'x': randomNumber(300, 900),
-        'y': randomNumber(100, 500)
-      }
-  },
-
-  {
-      'author': {
-        'avatar': 'img/avatars/user' + '0' + randomNumber(1, 8) + '.png'
-      },
-
-      'offer': {
-        'title': randomTitle(),
-        'address': 'location.x, location.y',
-        'price': randomNumber(1000, 1000000),
-        'type': randomArrayValue(types),
-        'rooms': randomNumber(1, 5),
-        'guests': randomNumber(5, 50),
-        'checkin': randomArrayValue(times),
-        'checkout': randomArrayValue(times),
-        'features': randomArrayValue(facilities),
-        'description': '',
-        'photos': []
-      },
-
-      'location': {
-        'x': randomNumber(300, 900),
-        'y': randomNumber(100, 500)
-      }
-  },
-
-  {
-      'author': {
-        'avatar': 'img/avatars/user' + '0' + randomNumber(1, 8) + '.png'
-      },
-
-      'offer': {
-        'title': randomTitle(),
-        'address': 'location.x, location.y',
-        'price': randomNumber(1000, 1000000),
-        'type': randomArrayValue(types),
-        'rooms': randomNumber(1, 5),
-        'guests': randomNumber(5, 50),
-        'checkin': randomArrayValue(times),
-        'checkout': randomArrayValue(times),
-        'features': randomArrayValue(facilities),
-        'description': '',
-        'photos': []
-      },
-
-      'location': {
-        'x': randomNumber(300, 900),
-        'y': randomNumber(100, 500)
-      }
-  },
-
-  {
-      'author': {
-        'avatar': 'img/avatars/user' + '0' + randomNumber(1, 8) + '.png'
-      },
-
-      'offer': {
-        'title': randomTitle(),
-        'address': 'location.x, location.y',
-        'price': randomNumber(1000, 1000000),
-        'type': randomArrayValue(types),
-        'rooms': randomNumber(1, 5),
-        'guests': randomNumber(5, 50),
-        'checkin': randomArrayValue(times),
-        'checkout': randomArrayValue(times),
-        'features': randomArrayValue(facilities),
-        'description': '',
-        'photos': []
-      },
-
-      'location': {
-        'x': randomNumber(300, 900),
-        'y': randomNumber(100, 500)
-      }
-  },
-
-  {
-      'author': {
-        'avatar': 'img/avatars/user' + '0' + randomNumber(1, 8) + '.png'
-      },
-
-      'offer': {
-        'title': randomTitle(),
-        'address': 'location.x, location.y',
-        'price': randomNumber(1000, 1000000),
-        'type': randomArrayValue(types),
-        'rooms': randomNumber(1, 5),
-        'guests': randomNumber(5, 50),
-        'checkin': randomArrayValue(times),
-        'checkout': randomArrayValue(times),
-        'features': randomArrayValue(facilities),
-        'description': '',
-        'photos': []
-      },
-
-      'location': {
-        'x': randomNumber(300, 900),
-        'y': randomNumber(100, 500)
-      }
-  },
-
-  {
-      'author': {
-        'avatar': 'img/avatars/user' + '0' + randomNumber(1, 8) + '.png'
-      },
-
-      'offer': {
-        'title': randomTitle(),
-        'address': 'location.x, location.y',
-        'price': randomNumber(1000, 1000000),
-        'type': randomArrayValue(types),
-        'rooms': randomNumber(1, 5),
-        'guests': randomNumber(5, 50),
-        'checkin': randomArrayValue(times),
-        'checkout': randomArrayValue(times),
-        'features': randomArrayValue(facilities),
-        'description': '',
-        'photos': []
-      },
-
-      'location': {
-        'x': randomNumber(300, 900),
-        'y': randomNumber(100, 500)
-      }
-  },
-
-  {
-      'author': {
-        'avatar': 'img/avatars/user' + '0' + randomNumber(1, 8) + '.png'
-      },
-
-      'offer': {
-        'title': randomTitle(),
-        'address': 'location.x, location.y',
-        'price': randomNumber(1000, 1000000),
-        'type': randomArrayValue(types),
-        'rooms': randomNumber(1, 5),
-        'guests': randomNumber(5, 50),
-        'checkin': randomArrayValue(times),
-        'checkout': randomArrayValue(times),
-        'features': randomArrayValue(facilities),
-        'description': '',
-        'photos': []
-      },
-
-      'location': {
-        'x': randomNumber(300, 900),
-        'y': randomNumber(100, 500)
-      }
-  },
-
-  {
-      'author': {
-        'avatar': 'img/avatars/user' + '0' + randomNumber(1, 8) + '.png'
-      },
-
-      'offer': {
-        'title': randomTitle(),
-        'address': 'location.x, location.y',
-        'price': randomNumber(1000, 1000000),
-        'type': randomArrayValue(types),
-        'rooms': randomNumber(1, 5),
-        'guests': randomNumber(5, 50),
-        'checkin': randomArrayValue(times),
-        'checkout': randomArrayValue(times),
-        'features': randomArrayValue(facilities),
-        'description': '',
-        'photos': []
-      },
-
-      'location': {
-        'x': randomNumber(300, 900),
-        'y': randomNumber(100, 500)
-      }
-  }
-];
+for (var i = 0; i < 8; i++) {
+  similarAdverts[i] = typicalObject();
+}
 
 map.classList.remove('map--faded');
