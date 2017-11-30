@@ -1,16 +1,26 @@
 'use strict';
+
 var similarAdverts = [];
 var map = document.querySelector('.map');
 var flats = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
-var types = {
+var types = ['flat', 'house', 'bungalo'];
+var typesRusMap = {
   flat: 'Квартира',
   house: 'Дом',
-  bungalo: 'Бунгало'};
+  bungalo: 'Бунгало'
+};
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var FEATURES_LENGHT = 6;
 var times = ['12:00', '13:00', '14:00'];
+var MIN_X = 300;
+var MAX_X = 900;
+var MIN_Y = 100;
+var MAX_Y = 500;
+var OBJECT_LENGHT = 8;
 var mapPins = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('template').content.querySelector('.map__card');
 var buttonTemplate = document.querySelector('template').content.querySelector('.map__pin');
+var fragment = document.createDocumentFragment();
 
 /**
  * Находим случайное число из диапазона
@@ -36,42 +46,26 @@ var randomArrayValue = function (array) {
 };
 
 /**
- * Копируем массив facilities, сортируем его случайным образом, выбираем случайную длину массива от 1 до 6
+ * Находим массив случайной длины из массива features
  * @method
- * @return {[array]} [Возвращаем новый массив]
+ * @return {[array]} [Полученный массив]
  */
 var randomFeatures = function () {
-
-  /**
-   * [Число для случайного сравнения]
-   * @method
-   * @param  {[type]} a [description]
-   * @param  {[type]} b [description]
-   * @return {[type]} [description]
-   */
-  var compareRandom = function (a, b) {
-    return Math.random() - 0.5;
-  };
-
-  var newFeatures = features.slice(0);
-  newFeatures.sort(compareRandom);
-  newFeatures.length = randomNumber(1, 5);
-  // var stringFeatures = newFeatures.join(', ');
-
+  var newFeatures = features.slice(randomNumber(0, features.length));
   return newFeatures;
 };
 
-var someX;
-var someY;
-var addressString;
+/**
+ * Находим случайный адресс
+ * @method
+ * @return {[object]} [Возвращаем объект с координатами x, y]
+ */
 var randomAddress = function () {
-  someX = randomNumber(300, 900);
-  someY = randomNumber(100, 500);
-  addressString = [someX, someY];
-
-  return addressString;
+  return {
+    'x': randomNumber(MIN_X, MAX_X),
+    'y': randomNumber(MIN_Y, MAX_Y)
+  };
 };
-randomAddress();
 
 /**
  * Функция которая генерирует объект
@@ -80,6 +74,7 @@ randomAddress();
  * @return {[object]} [Типовой объект]
  */
 var typicalObject = function (a) {
+  var location = randomAddress();
   var someObject = {
     'author': {
       'avatar': 'img/avatars/user' + '0' + [a + 1] + '.png'
@@ -87,9 +82,9 @@ var typicalObject = function (a) {
 
     'offer': {
       'title': flats[a],
-      'address': addressString.join(', '),
+      'address': location.x + ', ' + location.y ,
       'price': randomNumber(1000, 1000000),
-      'type': randomArrayValue(Object.values(types)),
+      'type': typesRusMap[randomArrayValue(types)],
       'rooms': randomNumber(1, 5),
       'guests': randomNumber(5, 50),
       'checkin': randomArrayValue(times),
@@ -100,53 +95,54 @@ var typicalObject = function (a) {
     },
 
     'location': {
-      'x': someX,
-      'y': someY
+      'x': location.x,
+      'y': location.y
     }
   };
   return someObject;
 };
 
-/**
- * Удаляем элементы списка popup__features
- * @method
- */
-var removeCh = function () {
-  for (var i = 0; i < 6; i++) {
-    popupList.removeChild(elementList[i]);
-  }
-};
-
-/**
- * Добавляем в html в popup__features список удобств из объекта similarAdverts.offer.features
- * @method
- */
 var featuresHtml = function () {
+  var fragment = document.createDocumentFragment();
+
   for (var j = 0; j < similarAdverts[i].offer.features.length; j++) {
-    var elementListHtml = '<li class="feature feature--' + similarAdverts[i].offer.features[j] + '"></li>';
-    popupList.insertAdjacentHTML('afterbegin', elementListHtml);
+    var newElementList = document.createDocumentFragment('li');
+    newElementList.className = 'feature' + 'feature--' + similarAdverts[i].offer.features[j];
+
+    fragment.appendChild(newElementList);
   }
+  popupList.appendChild(fragment);
 };
 
-for (var i = 0; i < 8; i++) {
+for (var i = 0; i < OBJECT_LENGHT; i++) {
   similarAdverts[i] = typicalObject(i);
 }
 
 map.classList.remove('map--faded');
 
-for (var i = 0; i < similarAdverts.length; i++) {
+
+/**
+ * Отрисовываем метки на карте
+ * @method
+ * @return {[type]} [description]
+ */
+var renderPoints = function () {
   var mapPoint = buttonTemplate.cloneNode(true);
   mapPoint.style.left = similarAdverts[i].location.x + 'px';
   mapPoint.style.left = similarAdverts[i].location.y + 'px';
   mapPoint.querySelector('img').src = similarAdverts[i].author.avatar;
 
-  mapPins.appendChild(mapPoint);
+  return mapPoint;
 }
 
-for (var i = 0; i < similarAdverts.length; i++) {
+/**
+ * Отрисовываем объявления на карте
+ * @method
+ * @return {[type]} [description]
+ */
+var renderPin = function () {
   var somePin = pinTemplate.cloneNode(true);
-  var popupList = somePin.querySelector('.popup__features');
-  var elementList = somePin.querySelectorAll('.popup__features .feature');
+  var popupList = document.querySelector('.popup__features');
 
   somePin.querySelector('.popup__avatar').src = similarAdverts[i].author.avatar;
   somePin.querySelector('h3').textContent = similarAdverts[i].offer.title;
@@ -155,9 +151,14 @@ for (var i = 0; i < similarAdverts.length; i++) {
   somePin.querySelector('h4').textContent = similarAdverts[i].offer.type;
   somePin.querySelectorAll('p')[2].textContent = similarAdverts[i].offer.rooms + ' комнаты для ' + similarAdverts[i].offer.guests + ' гостей';
   somePin.querySelectorAll('p')[3].textContent = 'Заезд после ' + similarAdverts[i].offer.checkin + ' , выезд до ' + similarAdverts[i].offer.checkout;
-  removeCh();
-  featuresHtml();
   somePin.querySelectorAll('p')[4].textContent = similarAdverts[i].offer.description;
 
-  mapPins.appendChild(somePin);
+  return somePin;
 }
+
+for (var i = 0; i < similarAdverts.length; i++) {
+  fragment.appendChild(renderPin());
+  fragment.appendChild(renderPoints());
+}
+
+mapPins.appendChild(fragment);
