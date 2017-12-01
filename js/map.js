@@ -10,7 +10,6 @@ var typesRusMap = {
   bungalo: 'Бунгало'
 };
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var FEATURES_LENGHT = 6;
 var times = ['12:00', '13:00', '14:00'];
 var MIN_X = 300;
 var MAX_X = 900;
@@ -20,6 +19,8 @@ var OBJECT_LENGHT = 8;
 var mapPins = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('template').content.querySelector('.map__card');
 var buttonTemplate = document.querySelector('template').content.querySelector('.map__pin');
+var popupList = pinTemplate.querySelector('.popup__features');
+var listElement = pinTemplate.querySelectorAll('.feature');
 var fragment = document.createDocumentFragment();
 
 /**
@@ -51,7 +52,7 @@ var randomArrayValue = function (array) {
  * @return {[array]} [Полученный массив]
  */
 var randomFeatures = function () {
-  var newFeatures = features.slice(randomNumber(0, features.length));
+  var newFeatures = features.slice(randomNumber(1, features.length));
   return newFeatures;
 };
 
@@ -102,29 +103,43 @@ var typicalObject = function (a) {
   return someObject;
 };
 
-var featuresHtml = function () {
+/**
+ * Генерируем спиоск удобств(features) из объекта similarAdverts.offer.features
+ * @method
+ * @param  {[type]} a [Индекс]
+ * @return {[type]} [Фрагмент с сгенирированным списком]
+ */
+var featuresHtml = function (a) {
   var fragment = document.createDocumentFragment();
 
-  for (var j = 0; j < similarAdverts[i].offer.features.length; j++) {
-    var newElementList = document.createDocumentFragment('li');
-    newElementList.className = 'feature' + 'feature--' + similarAdverts[i].offer.features[j];
+  var newList = document.createElement('ul');
+  newList.className = 'popup__features';
+
+  for (var j = 0; j < similarAdverts[a].offer.features.length; j++) {
+    var newElementList = document.createElement('li');
+    newElementList.className = 'feature ' + 'feature--' + similarAdverts[a].offer.features[j];
 
     fragment.appendChild(newElementList);
   }
-  popupList.appendChild(fragment);
+
+  newList.appendChild(fragment);
+  return newList;
 };
 
 for (var i = 0; i < OBJECT_LENGHT; i++) {
   similarAdverts[i] = typicalObject(i);
 }
 
+/**
+ * Удаляем тень с карты
+ */
 map.classList.remove('map--faded');
 
 
 /**
  * Отрисовываем метки на карте
  * @method
- * @return {[type]} [description]
+ * @return {[type]} [Сгенерированные метки]
  */
 var renderPoints = function () {
   var mapPoint = buttonTemplate.cloneNode(true);
@@ -138,11 +153,10 @@ var renderPoints = function () {
 /**
  * Отрисовываем объявления на карте
  * @method
- * @return {[type]} [description]
+ * @return {[type]} [Сгенерированные объявления]
  */
 var renderPin = function () {
   var somePin = pinTemplate.cloneNode(true);
-  var popupList = document.querySelector('.popup__features');
 
   somePin.querySelector('.popup__avatar').src = similarAdverts[i].author.avatar;
   somePin.querySelector('h3').textContent = similarAdverts[i].offer.title;
@@ -152,6 +166,7 @@ var renderPin = function () {
   somePin.querySelectorAll('p')[2].textContent = similarAdverts[i].offer.rooms + ' комнаты для ' + similarAdverts[i].offer.guests + ' гостей';
   somePin.querySelectorAll('p')[3].textContent = 'Заезд после ' + similarAdverts[i].offer.checkin + ' , выезд до ' + similarAdverts[i].offer.checkout;
   somePin.querySelectorAll('p')[4].textContent = similarAdverts[i].offer.description;
+  somePin.querySelector('.popup__features').replaceWith(featuresHtml(i));
 
   return somePin;
 }
