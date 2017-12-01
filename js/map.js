@@ -52,7 +52,7 @@ var randomArrayValue = function (array) {
  * @return {[array]} [Полученный массив]
  */
 var randomFeatures = function () {
-  var newFeatures = features.slice(randomNumber(1, features.length));
+  var newFeatures = features.slice(randomNumber(0, features.length - 2));
   return newFeatures;
 };
 
