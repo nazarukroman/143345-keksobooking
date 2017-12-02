@@ -1,6 +1,5 @@
 'use strict';
 
-var similarAdverts = [];
 var map = document.querySelector('.map');
 var flats = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var types = ['flat', 'house', 'bungalo'];
@@ -19,8 +18,6 @@ var OBJECT_LENGHT = 8;
 var mapPins = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('template').content.querySelector('.map__card');
 var buttonTemplate = document.querySelector('template').content.querySelector('.map__pin');
-var popupList = pinTemplate.querySelector('.popup__features');
-var listElement = pinTemplate.querySelectorAll('.feature');
 var fragment = document.createDocumentFragment();
 
 /**
@@ -83,7 +80,7 @@ var typicalObject = function (a) {
 
     'offer': {
       'title': flats[a],
-      'address': location.x + ', ' + location.y ,
+      'address': location.x + ', ' + location.y,
       'price': randomNumber(1000, 1000000),
       'type': typesRusMap[randomArrayValue(types)],
       'rooms': randomNumber(1, 5),
@@ -110,7 +107,7 @@ var typicalObject = function (a) {
  * @return {[type]} [Фрагмент с сгенирированным списком]
  */
 var featuresHtml = function (a) {
-  var fragment = document.createDocumentFragment();
+  var ulFragment = document.createDocumentFragment();
 
   var newList = document.createElement('ul');
   newList.className = 'popup__features';
@@ -119,13 +116,14 @@ var featuresHtml = function (a) {
     var newElementList = document.createElement('li');
     newElementList.className = 'feature ' + 'feature--' + similarAdverts[a].offer.features[j];
 
-    fragment.appendChild(newElementList);
+    ulFragment.appendChild(newElementList);
   }
 
-  newList.appendChild(fragment);
+  newList.appendChild(ulFragment);
   return newList;
 };
 
+var similarAdverts = [];
 for (var i = 0; i < OBJECT_LENGHT; i++) {
   similarAdverts[i] = typicalObject(i);
 }
@@ -148,7 +146,7 @@ var renderPoints = function () {
   mapPoint.querySelector('img').src = similarAdverts[i].author.avatar;
 
   return mapPoint;
-}
+};
 
 /**
  * Отрисовываем объявления на карте
@@ -169,9 +167,9 @@ var renderPin = function () {
   somePin.querySelector('.popup__features').replaceWith(featuresHtml(i));
 
   return somePin;
-}
+};
 
-for (var i = 0; i < similarAdverts.length; i++) {
+for (var k = 0; k < similarAdverts.length; k++) {
   fragment.appendChild(renderPin());
   fragment.appendChild(renderPoints());
 }
