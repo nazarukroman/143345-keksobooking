@@ -149,7 +149,7 @@ var renderPoints = function () {
 };
 
 /**
- * Отрисовываем объявления на карте
+ * Заполняем объявление на карте
  * @method
  * @return {[type]} [Сгенерированные объявления]
  */
@@ -169,6 +169,9 @@ var renderPin = function () {
   return somePin;
 };
 
+/**
+ * 
+ */
 for (var k = 0; k < similarAdverts.length; k++) {
   fragment.appendChild(renderPin());
   fragment.appendChild(renderPoints());
