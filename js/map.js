@@ -22,6 +22,7 @@ var fragment = document.createDocumentFragment();
 var noticeForm = document.querySelector('.notice__form');
 var formFieldset = noticeForm.querySelectorAll('fieldset');
 var mainPin = document.querySelector('.map__pin--main');
+var ESC_KEYCODE = 27;
 
 
 
@@ -85,7 +86,7 @@ var randomAddress = function () {
  */
 var typicalObject = function (a) {
   var location = randomAddress();
-  var someObject = {
+  var advertObject = {
     'author': {
       'avatar': 'img/avatars/user' + '0' + [a + 1] + '.png'
     },
@@ -109,7 +110,7 @@ var typicalObject = function (a) {
       'y': location.y
     }
   };
-  return someObject;
+  return advertObject;
 };
 
 /**
@@ -135,13 +136,32 @@ var featuresHtml = function (a) {
   return newList;
 };
 
+/**
+ * Массив с объектами, в которых лежит информация для объявлений
+ * @type {Array}
+ */
 var similarAdverts = [];
 for (var i = 0; i < OBJECT_LENGHT; i++) {
   similarAdverts[i] = typicalObject(i);
 }
 
 /**
- * Отрисовываем метки на карте
+ * Удаляем если есть класс map__pin--active у метки
+ * и добавляем класс map__pin--active на ту метку, на которую нажали
+ * @param  {event} Событие
+ */
+var activePins = function (event) {
+  var pins = findPins();
+  for (var p = 0; p < pins.length; p++) {
+    if (pins[p].classList.contains('map__pin--active')) {
+      pins[p].classList.remove('map__pin--active');
+    }
+  }
+  event.currentTarget.classList.add('map__pin--active');
+};
+
+/**
+ * Отрисовываем метки на карте + устанавливаем обработчик событий для нажатия по метке
  * @method
  * @return {[type]} [Сгенерированные метки]
  */
@@ -150,6 +170,10 @@ var renderPoints = function (f) {
   mapPoint.style.left = similarAdverts[f].location.x + 'px';
   mapPoint.style.left = similarAdverts[f].location.y + 'px';
   mapPoint.querySelector('img').src = similarAdverts[f].author.avatar;
+
+  mapPoint.addEventListener('click', function (evt) {
+    activePins(evt);
+  });
 
   return mapPoint;
 };
@@ -160,19 +184,19 @@ var renderPoints = function (f) {
  * @return {[type]} [Сгенерированные объявления]
  */
 var renderPin = function (l) {
-  var somePin = pinTemplate.cloneNode(true);
+  var pinNode = pinTemplate.cloneNode(true);
 
-  somePin.querySelector('.popup__avatar').src = similarAdverts[l].author.avatar;
-  somePin.querySelector('h3').textContent = similarAdverts[l].offer.title;
-  somePin.querySelector('small').textContent = similarAdverts[l].offer.address;
-  somePin.querySelector('.popup__price').textContent = similarAdverts[l].offer.price + '&#x20bd;' + '/ночь';
-  somePin.querySelector('h4').textContent = similarAdverts[l].offer.type;
-  somePin.querySelectorAll('p')[2].textContent = similarAdverts[l].offer.rooms + ' комнаты для ' + similarAdverts[l].offer.guests + ' гостей';
-  somePin.querySelectorAll('p')[3].textContent = 'Заезд после ' + similarAdverts[l].offer.checkin + ' , выезд до ' + similarAdverts[l].offer.checkout;
-  somePin.querySelectorAll('p')[4].textContent = similarAdverts[l].offer.description;
-  somePin.querySelector('.popup__features').replaceWith(featuresHtml(l));
+  pinNode.querySelector('.popup__avatar').src = similarAdverts[l].author.avatar;
+  pinNode.querySelector('h3').textContent = similarAdverts[l].offer.title;
+  pinNode.querySelector('small').textContent = similarAdverts[l].offer.address;
+  pinNode.querySelector('.popup__price').textContent = similarAdverts[l].offer.price + '&#x20bd;' + '/ночь';
+  pinNode.querySelector('h4').textContent = similarAdverts[l].offer.type;
+  pinNode.querySelectorAll('p')[2].textContent = similarAdverts[l].offer.rooms + ' комнаты для ' + similarAdverts[l].offer.guests + ' гостей';
+  pinNode.querySelectorAll('p')[3].textContent = 'Заезд после ' + similarAdverts[l].offer.checkin + ' , выезд до ' + similarAdverts[l].offer.checkout;
+  pinNode.querySelectorAll('p')[4].textContent = similarAdverts[l].offer.description;
+  pinNode.querySelector('.popup__features').replaceWith(featuresHtml(l));
 
-  return somePin;
+  return pinNode;
 };
 
 /**
@@ -193,9 +217,10 @@ var removeDisabled = function () {
 };
 
 /**
- * Удаляем затемнение карты
- * Отрисовываем объявления
- * Удаляем атрибут disabled с полей формы
+ * Функция для
+ * Удаления затемнения карты
+ * Отрисовывания объявления
+ * Удаления атрибута disabled с полей формы
  */
 var mainPinMouseupHandler = function () {
   map.classList.remove('map--faded');
@@ -204,25 +229,22 @@ var mainPinMouseupHandler = function () {
 };
 
 /**
- * Находим все метки
+ * Функция для нахождения всех меток
  */
 var findPins = function () {
-  var pins = document.querySelectorAll('.map__pin');
-
-  return pins;
+  return document.querySelectorAll('.map__pin');
 };
 
 /**
- * Находим все карточки
+ * Функция для нахождения всех карточек
  */
 var findCards = function () {
-  var cards = document.querySelectorAll('.map__card');
-
-  return cards; 
+  return document.querySelectorAll('.map__card');
 };
 
 /**
- * Скрываем все карточки с карты
+ * Функция для 
+ * Скрывания всех карточек с карты
  * @param  {Входной массив}
  */
 var hideCards = function (cardsArray) {
@@ -233,42 +255,11 @@ var hideCards = function (cardsArray) {
 
 
 /**
- * Хотел добавлять класс map__pin--active меткам в этой функции
- * @param  {array} Массив с найденными метками
+ * Обработчик события(нажатия мышкой) по главной метке на карте
  */
-var activePins = function (pinsArray) {
-  pinsArray[i].classList.add('map__pin--active');
-};
-
-/**
- * Хотел при клике на одну из меток добавить ей класс map__pin--active
- * @param  {array} Массив с найденными метками
- */
-var mapPinClickHandler = function (pinsArray) {
-  for (var i = 0; i < pinsArray.length; i++) {
-   pinsArray[i].addEventListener('click', activePins(pinsArray));
-  }
-};
-
-/**
- * Проверял что выводит evt
- */
-// var mapPinsClickHandler = function (evt) {
-//   console.log(evt);
-// };
-
-
 mainPin.addEventListener('mouseup', function () {
   mainPinMouseupHandler();
   hideCards(findCards());
-  // mapPinClickHandler(findPins());
-  // mapPinsClickHandler();
-
-  // var test = findPins();
-
-  // for (var i = 0; i < test.length; i++) {
-  //   test[i].addEventListener('click', mapPinsClickHandler);
-  // }
 });
 
 
