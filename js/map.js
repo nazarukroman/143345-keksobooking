@@ -24,6 +24,7 @@ var formFieldset = noticeForm.querySelectorAll('fieldset');
 var mainPin = document.querySelector('.map__pin--main');
 
 
+
 /**
  * Добавляем артибут disabled для всех полей формы
  */
@@ -182,13 +183,97 @@ for (var k = 0; k < similarAdverts.length; k++) {
   fragment.appendChild(renderPoints(k));
 }
 
-mainPin.addEventListener('mouseup', function () {
-  alert('Hello');
-});
+/**
+ * Удаляем атрибут disabled с полей формы
+ */
+var removeDisabled = function () {
+  for (var g = 0; g < formFieldset.length; g++) {
+    formFieldset[g].removeAttribute('disabled');
+  }
+};
 
 /**
- * Отрисовываем все объявления на странице
+ * Удаляем затемнение карты
+ * Отрисовываем объявления
+ * Удаляем атрибут disabled с полей формы
  */
-// mapPins.appendChild(fragment);
+var mainPinMouseupHandler = function () {
+  map.classList.remove('map--faded');
+  mapPins.appendChild(fragment);
+  removeDisabled();
+};
+
+/**
+ * Находим все метки
+ */
+var findPins = function () {
+  var pins = document.querySelectorAll('.map__pin');
+
+  return pins;
+};
+
+/**
+ * Находим все карточки
+ */
+var findCards = function () {
+  var cards = document.querySelectorAll('.map__card');
+
+  return cards; 
+};
+
+/**
+ * Скрываем все карточки с карты
+ * @param  {Входной массив}
+ */
+var hideCards = function (cardsArray) {
+  for (var i = 0; i < cardsArray.length; i++) {
+   cardsArray[i].classList.add('hidden');
+  }
+};
+
+
+/**
+ * Хотел добавлять класс map__pin--active меткам в этой функции
+ * @param  {array} Массив с найденными метками
+ */
+var activePins = function (pinsArray) {
+  pinsArray[i].classList.add('map__pin--active');
+};
+
+/**
+ * Хотел при клике на одну из меток добавить ей класс map__pin--active
+ * @param  {array} Массив с найденными метками
+ */
+var mapPinClickHandler = function (pinsArray) {
+  for (var i = 0; i < pinsArray.length; i++) {
+   pinsArray[i].addEventListener('click', activePins(pinsArray));
+  }
+};
+
+/**
+ * Проверял что выводит evt
+ */
+// var mapPinsClickHandler = function (evt) {
+//   console.log(evt);
+// };
+
+
+mainPin.addEventListener('mouseup', function () {
+  mainPinMouseupHandler();
+  hideCards(findCards());
+  // mapPinClickHandler(findPins());
+  // mapPinsClickHandler();
+
+  // var test = findPins();
+
+  // for (var i = 0; i < test.length; i++) {
+  //   test[i].addEventListener('click', mapPinsClickHandler);
+  // }
+});
+
+
+
+
+
 
 
