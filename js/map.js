@@ -19,6 +19,17 @@ var mapPins = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('template').content.querySelector('.map__card');
 var buttonTemplate = document.querySelector('template').content.querySelector('.map__pin');
 var fragment = document.createDocumentFragment();
+var noticeForm = document.querySelector('.notice__form');
+var formFieldset = noticeForm.querySelectorAll('fieldset');
+var mainPin = document.querySelector('.map__pin--main');
+
+
+/**
+ * Добавляем артибут disabled для всех полей формы
+ */
+for (var g = 0; g < formFieldset.length; g++) {
+  formFieldset[g].setAttribute('disabled', 'disabled');
+}
 
 /**
  * Находим случайное число из диапазона
@@ -129,21 +140,15 @@ for (var i = 0; i < OBJECT_LENGHT; i++) {
 }
 
 /**
- * Удаляем тень с карты
- */
-map.classList.remove('map--faded');
-
-
-/**
  * Отрисовываем метки на карте
  * @method
  * @return {[type]} [Сгенерированные метки]
  */
-var renderPoints = function () {
+var renderPoints = function (f) {
   var mapPoint = buttonTemplate.cloneNode(true);
-  mapPoint.style.left = similarAdverts[i].location.x + 'px';
-  mapPoint.style.left = similarAdverts[i].location.y + 'px';
-  mapPoint.querySelector('img').src = similarAdverts[i].author.avatar;
+  mapPoint.style.left = similarAdverts[f].location.x + 'px';
+  mapPoint.style.left = similarAdverts[f].location.y + 'px';
+  mapPoint.querySelector('img').src = similarAdverts[f].author.avatar;
 
   return mapPoint;
 };
@@ -153,28 +158,37 @@ var renderPoints = function () {
  * @method
  * @return {[type]} [Сгенерированные объявления]
  */
-var renderPin = function () {
+var renderPin = function (l) {
   var somePin = pinTemplate.cloneNode(true);
 
-  somePin.querySelector('.popup__avatar').src = similarAdverts[i].author.avatar;
-  somePin.querySelector('h3').textContent = similarAdverts[i].offer.title;
-  somePin.querySelector('small').textContent = similarAdverts[i].offer.address;
-  somePin.querySelector('.popup__price').textContent = similarAdverts[i].offer.price + '&#x20bd;/ночь';
-  somePin.querySelector('h4').textContent = similarAdverts[i].offer.type;
-  somePin.querySelectorAll('p')[2].textContent = similarAdverts[i].offer.rooms + ' комнаты для ' + similarAdverts[i].offer.guests + ' гостей';
-  somePin.querySelectorAll('p')[3].textContent = 'Заезд после ' + similarAdverts[i].offer.checkin + ' , выезд до ' + similarAdverts[i].offer.checkout;
-  somePin.querySelectorAll('p')[4].textContent = similarAdverts[i].offer.description;
-  somePin.querySelector('.popup__features').replaceWith(featuresHtml(i));
+  somePin.querySelector('.popup__avatar').src = similarAdverts[l].author.avatar;
+  somePin.querySelector('h3').textContent = similarAdverts[l].offer.title;
+  somePin.querySelector('small').textContent = similarAdverts[l].offer.address;
+  somePin.querySelector('.popup__price').textContent = similarAdverts[l].offer.price + '&#x20bd;' + '/ночь';
+  somePin.querySelector('h4').textContent = similarAdverts[l].offer.type;
+  somePin.querySelectorAll('p')[2].textContent = similarAdverts[l].offer.rooms + ' комнаты для ' + similarAdverts[l].offer.guests + ' гостей';
+  somePin.querySelectorAll('p')[3].textContent = 'Заезд после ' + similarAdverts[l].offer.checkin + ' , выезд до ' + similarAdverts[l].offer.checkout;
+  somePin.querySelectorAll('p')[4].textContent = similarAdverts[l].offer.description;
+  somePin.querySelector('.popup__features').replaceWith(featuresHtml(l));
 
   return somePin;
 };
 
 /**
- * 
+ * Записываем все объявления во fragment
  */
 for (var k = 0; k < similarAdverts.length; k++) {
-  fragment.appendChild(renderPin());
-  fragment.appendChild(renderPoints());
+  fragment.appendChild(renderPin(k));
+  fragment.appendChild(renderPoints(k));
 }
 
-mapPins.appendChild(fragment);
+mainPin.addEventListener('mouseup', function () {
+  alert('Hello');
+});
+
+/**
+ * Отрисовываем все объявления на странице
+ */
+// mapPins.appendChild(fragment);
+
+
