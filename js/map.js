@@ -108,8 +108,8 @@ var setTypicalObject = function (a) {
 
 /**
  * Генерируем спиоск удобств(features) из объекта similarAdverts.offer.features
- * @param  {[object]} объект с индексом
- * @return {[type]} [Фрагмент с сгенирированным списком]
+ * @param  {[object]} firstAdObject [объект с индексом]
+ * @return {[fragment]}               [Фрагмент с новым списком]
  */
 var getFeaturesHtml = function (firstAdObject) {
   var ulFragment = document.createDocumentFragment();
@@ -140,7 +140,7 @@ for (var i = 0; i < OBJECT_LENGHT; i++) {
 /**
  * Удаляем если есть класс map__pin--active у метки
  * и добавляем класс map__pin--active на ту метку, на которую нажали
- * @param  {[event]} пойманное событие
+ * @param  {[event]} event [пойманное событие]
  */
 var activePins = function (event) {
   var pinActive = document.querySelector('.map__pin--active');
@@ -154,11 +154,10 @@ var activePins = function (event) {
 
 var buttonTemplate = document.querySelector('template').content.querySelector('.map__pin');
 /**
- * Отрисовываем метки на карте + устанавливаем обработчик событий для нажатия по метке
- * @method
- * @param  {[object]} Объект с индексом
- * @param  {[number]} Индекс
- * @return {[type]} [Сгенерированные метки]
+ * [Отрисовываем метки на карте + устанавливаем обработчик событий для нажатия по метке]
+ * @param  {[object]} secondAdObject [Объект с индексом]
+ * @param  {[number]} count          [Индекс]
+ * @return {[type]}                [Сгенерированные метки]
  */
 var renderPoints = function (secondAdObject, count) {
   var mapPoint = buttonTemplate.cloneNode(true);
@@ -178,9 +177,8 @@ var renderPoints = function (secondAdObject, count) {
 var pinTemplate = document.querySelector('template').content.querySelector('.map__card');
 /**
  * Заполняем объявление на карте
- * @method
- * @param  {[object]} Объект с индексом
- * @return {[type]} [Сгенерированные объявления]
+ * @param  {[object]} thirdAdObject [Объект с индексом]
+ * @return {[type]}               [Сгенерированные объявления]
  */
 var renderAdvert = function (thirdAdObject) {
   var advertNode = pinTemplate.cloneNode(true);
@@ -220,22 +218,40 @@ var removeDisabled = function () {
 var mapSection = document.querySelector('.map');
 /**
  * Функция вставляет объявление в html
- * @param  {number} индекс
+ * Если какое-то объявление уже вставлено, то заменяет его на другое объявление, которое вызвал пользователь
+ * @param  {[number]} count [индекс]
  */
 var renderAdSection = function (count) {
   var filterContainer = document.querySelector('.map__filters-container');
-
+  var card = mapSection.querySelector('.map__card');
   if (mapSection.contains(card)) {
     mapSection.replaceChild(renderAdvert(similarAdverts[count]), card);
   } else {
     mapSection.insertBefore(renderAdvert(similarAdverts[count]), filterContainer);
   }
+  popupCloseHandlers();
+};
 
-  var card = mapSection.querySelector('.map__card');
-  var closePopupButton = card.querySelector('.popup__close');
+var popupCloseHandlers = function () {
+  var popup = mapSection.querySelector('.popup');
+  var closePopupButton = popup.querySelector('.popup__close');
 
-  closePopupButton.addEventListener('keydown', popupCloseEscHandler);
-  closePopupButton.addEventListener('click', closePopup);
+  document.addEventListener('keydown', function (evt) {
+    popupCloseEscHandler(evt);
+    checkPinActive();
+  });
+  closePopupButton.addEventListener('click', function () {
+    closePopup();
+    checkPinActive();
+  });
+};
+
+var checkPinActive = function () {
+  var pinActive2 = document.querySelector('.map__pin--active');
+  var mapHidden = document.querySelector('.map__card');
+  if (mapHidden.classList.contains('hidden')) {
+    pinActive2.classList.remove('map__pin--active');
+  }
 };
 
 var mapPins = document.querySelector('.map__pins');
@@ -255,9 +271,7 @@ var mainPinMouseupHandler = function () {
 /**
  * Обработчик события(нажатия мышкой) по главной метке на карте
  */
-mainPin.addEventListener('mouseup', function () {
-  mainPinMouseupHandler();
-});
+mainPin.addEventListener('mouseup', mainPinMouseupHandler);
 
 /**
  * 
@@ -265,7 +279,7 @@ mainPin.addEventListener('mouseup', function () {
 var closePopup = function () {
   var card = mapSection.querySelector('.map__card');
   card.classList.add('hidden');
-  // document.removeEventListener('keydown', onPopupEscPress);
+  document.removeEventListener('keydown', popupCloseEscHandler);
 };
 
 var popupCloseEscHandler = function (evt) {
