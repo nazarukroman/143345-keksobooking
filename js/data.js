@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
   var flats = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
   var types = ['flat', 'house', 'bungalo'];
@@ -9,7 +10,7 @@
   };
   var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var times = ['12:00', '13:00', '14:00'];
-  var OBJECT_LENGHT = 8;
+  var OFFERS_COUNT = 8;
   var MIN_X = 300;
   var MAX_X = 900;
   var MIN_Y = 100;
@@ -21,7 +22,7 @@
    * @param  {[number]} a [Индекс]
    * @return {[object]} [Типовой объект]
    */
-  var setTypicalObject = function (a) {
+  var getSingleOffer = function (a) {
     var location = window.untils.getRandomAddress(MIN_X, MAX_X, MIN_Y, MAX_Y);
     var advertObject = {
       'author': {
@@ -54,11 +55,20 @@
    * [Глобальная функция, которая заполняет массив данными]
    * @return {[array]} [Массив с данными об объявлениях]
    */
-  window.data = function () {
-    var similarAdverts = [];
-    for (var i = 0; i < OBJECT_LENGHT; i++) {
-      similarAdverts[i] = setTypicalObject(i);
+  /**
+   * [Глобальная функция, которая заполняет массив данными]
+   * @param  {[number]} offersCount [Количество объявлений]
+   * @return {[array]} [Массив с данными об объявлениях]
+   */
+  var getOffers = function (offersCount) {
+    var offersArray = [];
+    for (var i = 0; i < offersCount; i++) {
+      offersArray[i] = getSingleOffer(i);
     }
-    return similarAdverts;
+    return offersArray;
+  };
+
+  window.data = {
+    getOffers: getOffers(OFFERS_COUNT)
   };
 })();

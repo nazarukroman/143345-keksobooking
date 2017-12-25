@@ -16,57 +16,50 @@
 
     mapPoint.setAttribute('data-id', count);
 
-    mapPoint.addEventListener('click', function (evt) {
-      window.pin.activePins();
-      window.pin.pinClickHandler(evt);
-    });
+    mapPoint.addEventListener('click', mapPointClickHandler);
 
     return mapPoint;
   };
 
-  window.pin = {
-    fragment: function () {
-      var fragment = document.createDocumentFragment();
-      // var similarAdverts = window.data();
-      /**
-       * Записываем все метки во fragment
-       */
-      for (var k = 0; k < window.data().length; k++) {
-        fragment.appendChild(renderPoints(window.data()[k], k));
-      }
-      return fragment;
-    },
+  var mapPointClickHandler = function (evt) {
+    activePins();
+    pinClickHandler(evt);
+  };
 
+  var getPinsFragment = function () {
+    var fragment = document.createDocumentFragment();
     /**
-     * Функция для обработчика на Esc
-     * вешает класс 'hidden' на popup
-     * удаляет активный класс у метки
-     * @param  {[event]} event [Событие]
+     * Записываем все метки во fragment
      */
-    popupEscHandler: function (event) {
-      window.card.closePopupButtonKeydownHandler(event);
-      window.pin.activePins();
-    },
-
-    /**
-     * Удаляем активный класс у метки
-     */
-    activePins: function () {
-      var pinActive = document.querySelector('.map__pin--active');
-      if (pinActive) {
-        pinActive.classList.remove('map__pin--active');
-      }
-    },
-
-    /**
-     * Находим дата-атрибут у метки на которую нажали
-     * Затем добавляется или заменяется объявление с таким же дата-атрибутом на карту (функция renderAdSection)
-     * @param  {[event]} event1 [Событие]
-     */
-    pinClickHandler: function (event1) {
-      var dataId = event.currentTarget.getAttribute('data-id');
-      window.card.renderAdSection(dataId);
-      event1.currentTarget.classList.add('map__pin--active');
+    for (var i = 0; i < window.data.getOffers.length; i++) {
+      fragment.appendChild(renderPoints(window.data.getOffers[i], i));
     }
+    return fragment;
+  };
+
+  /**
+   * Удаляем активный класс у метки
+   */
+  var activePins = function () {
+    var pinActive = document.querySelector('.map__pin--active');
+    if (pinActive) {
+      pinActive.classList.remove('map__pin--active');
+    }
+  };
+
+  /**
+   * Находим дата-атрибут у метки на которую нажали
+   * Затем добавляется или заменяется объявление с таким же дата-атрибутом на карту (функция renderAdSection)
+   * @param  {[event]} evt [Событие]
+   */
+  var pinClickHandler = function (evt) {
+    var dataId = event.currentTarget.getAttribute('data-id');
+    window.card.renderAdSection(dataId);
+    evt.currentTarget.classList.add('map__pin--active');
+  };
+
+  window.pin = {
+    getPinsFragment: getPinsFragment(),
+    activePins: activePins
   };
 })();

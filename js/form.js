@@ -1,35 +1,20 @@
 'use strict';
 
 (function () {
-  window.form = {
-    /** 
-     * Удаляем атрибут disabled с полей формы
-     */
-    removeDisabled: function () {
-      for (var m = 0; m < formFieldset.length; m++) {
-        formFieldset[m].removeAttribute('disabled');
-      }
-    },
-
-    noticeForm: document.querySelector('.notice__form'),
+  var noticeForm = document.querySelector('.notice__form');
+  var formFieldset = noticeForm.querySelectorAll('fieldset');
+  /** 
+   * Удаляем атрибут disabled с полей формы
+   */
+  var removeDisabledFieldset = function () {
+    for (var i = 0; i < formFieldset.length; i++) {
+      formFieldset[i].removeAttribute('disabled');
+    }
   };
 
-  var formFieldset = window.form.noticeForm.querySelectorAll('fieldset');
-  /**
-   * Добавляем артибут disabled для всех полей формы
-   */
-  for (var g = 0; g < formFieldset.length; g++) {
-    formFieldset[g].setAttribute('disabled', 'disabled');
-  }
-
   var title = document.querySelector('#title');
-  /**
-   * Обработчик событий для "Заголовка объявления"
-   * Если сообщение сообщение слишком короткое, длинное или не значение пропущено
-   * То у инпута border становится красным
-   * Если полве валидное, то удаляется атрибут style
-   */
-  title.addEventListener('invalid', function () {
+
+  var titleInvalidHandler = function () {
     if (title.validity.tooShort) {
       title.setAttribute('style', 'border-color: red');
     } else if (title.validity.tooLong) {
@@ -40,20 +25,18 @@
       title.setCustomValidity('');
       title.removeAttribute('style');
     }
-  });
+  };
+  /**
+   * Обработчик событий для "Заголовка объявления"
+   * Если сообщение сообщение слишком короткое, длинное или не значение пропущено
+   * То у инпута border становится красным
+   * Если полве валидное, то удаляется атрибут style
+   */
+  title.addEventListener('invalid', titleInvalidHandler);
 
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
 
-  /**
-   * Обработчик события – изменение селекта Время заезда
-   */
-  timeIn.addEventListener('change', timeInChangeHandler);
-
-  /**
-   * Обработчик события – изменение селекта Время выезда
-   */
-  timeOut.addEventListener('change', timeOutChangeHandler);
 
   /**
    * Функция, при изменении селекта Время заезда, селект Время выезда становится таким же
@@ -71,6 +54,16 @@
     timeIn.options[timeOut.options.selectedIndex].selected = true;
   };
 
+  /**
+   * Обработчик события – изменение селекта Время заезда
+   */
+  timeIn.addEventListener('change', timeInChangeHandler);
+
+  /**
+   * Обработчик события – изменение селекта Время выезда
+   */
+  timeOut.addEventListener('change', timeOutChangeHandler);
+
   var accomondationType = document.querySelector('#type');
   var priceInput = document.querySelector('#price');
   var accomondationTypes = {
@@ -84,13 +77,13 @@
   var HOUSE_MIN_PRICE = 5000;
   var PALACE_MIN_PRICE = 10000;
 
+
   /**
-   * Обработчик событий для "Цена за ночь"
    * Если число слишком маленькое, большое или вводится не число
    * То у инпута border становится красным
    * Если полве валидное, то удаляется атрибут style
    */
-  priceInput.addEventListener('invalid', function () {
+  var priceInputInvalidHandler = function () {
     if (priceInput.validity.rangeUnderflow) {
       title.setAttribute('style', 'border-color: red');
     } else if (priceInput.validity.rangeOverflow) {
@@ -100,11 +93,12 @@
     } else {
       title.removeAttribute('style');
     }
-  });
+  };
+
   /**
-   * Обработчик события - при изменении селекта "Тип жилья" меняется минимальная сумма за ночь
+   * Обработчик событий для "Цена за ночь"
    */
-  accomondationType.addEventListener('change', accomondationTypeChangeHandler);
+  priceInput.addEventListener('invalid', priceInputInvalidHandler);
 
   /**
    * Функция которая проверяет выбранное значение в селекте "Тип жилья"
@@ -122,6 +116,11 @@
     }
   };
 
+  /**
+   * Обработчик события - при изменении селекта "Тип жилья" меняется минимальная сумма за ночь
+   */
+  accomondationType.addEventListener('change', accomondationTypeChangeHandler);
+
   var roomNumber = document.querySelector('#room_number');
   var roomCapacity = document.querySelector('#capacity');
   var rooms = {
@@ -136,15 +135,6 @@
     oneMan: 2,
     notForPeope: 3
   };
-  /**
-   * Обработчик события - при изменении селекта "Кол-во комнат" меняется селект "Количество мест"
-   */
-  roomNumber.addEventListener('change', roomNumberChangeHandler);
-
-  /**
-   * Обработчик события - при изменении селекта "Количество мест" меняется селект "Кол-во комнат"
-   */
-  roomCapacity.addEventListener('change', roomCapacityChangeHandler);
 
   /**
    * Функция которая проверяет выбранное значение в селекте "Кол-во комнат"
@@ -176,5 +166,20 @@
     } else if (roomCapacity.selectedIndex === guests.notForPeope) {
       roomNumber.options.selectedIndex = rooms.hundredRooms;
     }
+  };
+
+  /**
+   * Обработчик события - при изменении селекта "Кол-во комнат" меняется селект "Количество мест"
+   */
+  roomNumber.addEventListener('change', roomNumberChangeHandler);
+
+  /**
+   * Обработчик события - при изменении селекта "Количество мест" меняется селект "Кол-во комнат"
+   */
+  roomCapacity.addEventListener('change', roomCapacityChangeHandler);
+
+  window.form = {
+    removeDisabledFieldset: removeDisabledFieldset,
+    noticeForm: noticeForm
   };
 })();

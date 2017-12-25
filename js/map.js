@@ -12,8 +12,8 @@
    */
   var mainPinMouseupHandler = function () {
     map.classList.remove('map--faded');
-    mapPins.appendChild(window.pin.fragment());
-    window.form.removeDisabled();
+    mapPins.appendChild(window.pin.getPinsFragment);
+    window.form.removeDisabledFieldset();
     window.form.noticeForm.classList.remove('notice__form--disabled');
   };
 
