@@ -31,10 +31,15 @@
     };
 
     /**
+
+     */
+    /**
      * Функция для
      * Удаления затемнения карты
      * Отрисовывания объявления
      * Удаления атрибута disabled с полей формы
+     * Удаление обработчиков событий с mousemove, mouseup
+     * @param  {[event]} upEvt [Событие]
      */
     var mainPinMouseupHandler = function (upEvt) {
       upEvt.preventDefault();
@@ -50,7 +55,7 @@
 
     document.addEventListener('mousemove', mainPinMouseMoveHandler);
     document.addEventListener('mouseup', mainPinMouseupHandler);
-  }
+  };
 
   mainPin.addEventListener('mousedown', mainPinMousedownHandler);
 })();
