@@ -26,13 +26,17 @@
         y: moveEvt.clientY
       };
 
-      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+      if (startCoords.y < 100) {
+        mainPin.style.top = 100 + 'px';
+      } else if (startCoords.y > 500) {
+        mainPin.style.top = 500 + 'px';
+      } else {
+        mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+      }
+
       mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
     };
 
-    /**
-
-     */
     /**
      * Функция для
      * Удаления затемнения карты
