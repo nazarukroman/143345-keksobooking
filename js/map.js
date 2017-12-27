@@ -37,7 +37,18 @@
         mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
       }
 
-      mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+      var MIN_COORD_X = 100;
+      var MAX_COORD_X = 1100;
+
+      if (startCoords.x < MIN_COORD_X) {
+        mainPin.style.left = MIN_COORD_X + 'px';
+      } else if (startCoords.x > MAX_COORD_X) {
+        mainPin.style.left = MAX_COORD_X + 'px';
+      } else {
+        mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+      }
+
+      window.form.setAddress(mainPin.style.top, mainPin.style.left);
     };
 
     /**

@@ -178,8 +178,21 @@
    */
   roomCapacity.addEventListener('change', roomCapacityChangeHandler);
 
+  /**
+   * В поле "Адрес" записываем координаты главной метки
+   * @param {[number]} xCoord [Координата X]
+   * @param {[number]} yCoord [Координата Y]
+   */
+  var setAddress = function (xCoord, yCoord) {
+    var addressInput = document.querySelector('#address');
+    var addressString = 'x: ' + xCoord + ', ' + 'y: ' + yCoord;
+
+    addressInput.setAttribute('value', addressString);
+  };
+
   window.form = {
     removeDisabledFieldset: removeDisabledFieldset,
-    noticeForm: noticeForm
+    noticeForm: noticeForm,
+    setAddress: setAddress
   };
 })();
