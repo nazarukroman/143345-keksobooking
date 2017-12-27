@@ -26,10 +26,13 @@
         y: moveEvt.clientY
       };
 
-      if (startCoords.y < 100) {
-        mainPin.style.top = 100 + 'px';
-      } else if (startCoords.y > 500) {
-        mainPin.style.top = 500 + 'px';
+      var MIN_COORD_Y = 100;
+      var MAX_COORD_Y = 500;
+
+      if (startCoords.y < MIN_COORD_Y) {
+        mainPin.style.top = MIN_COORD_Y + 'px';
+      } else if (startCoords.y > MAX_COORD_Y) {
+        mainPin.style.top = MAX_COORD_Y + 'px';
       } else {
         mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
       }
