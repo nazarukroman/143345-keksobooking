@@ -5,6 +5,10 @@
   var mapPins = document.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
 
+  /**
+   * Функция перетаскивания главной метки
+   * @param  {[event]} evt [событие]
+   */
   var mainPinMousedownHandler = function (evt) {
     evt.preventDefault();
 
