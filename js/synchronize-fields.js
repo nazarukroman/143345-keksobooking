@@ -1,14 +1,17 @@
 'use strict';
 
 (function () {
-  var synchronizeFields = function (firstElement, secondElement, firsValue, secondValue, callback) {
-    var firstElementChangeHandler = function () {
+  var synchronizeFields = function (firstElement, secondElement, firstValue, secondValue, callback) {
+    var elementChangeHandler = function () {
       var newFirstValue = firstElement.value;
-      var newSecondValue;
-      var indexValue = firsValue.indexOf(newFirstValue);
+      var newSecondValue = secondValue.value;
+      var indexFirstValue = firstValue.indexOf(newFirstValue);
+      var indexSecondValue = secondValue.indexOf(newSecondValue);
 
-      if (newFirstValue === secondValue[indexValue]) {
+      if (newFirstValue === secondValue[indexFirstValue]) {
         newSecondValue = newFirstValue;
+      } else if (newSecondValue === firstValue[indexSecondValue]) {
+        newFirstValue = newSecondValue;
       }
 
       if (typeof callback === 'function') {
@@ -16,7 +19,8 @@
       }
     };
 
-    firstElement.addEventListener('change', firstElementChangeHandler);
+    firstElement.addEventListener('change', elementChangeHandler);
+    secondElement.addEventListener('change', elementChangeHandler);
   };
 
   var syncValues = function (element, value) {
