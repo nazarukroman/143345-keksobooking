@@ -69,6 +69,7 @@
   };
 
   window.data = {
-    getOffers: getOffers(OFFERS_COUNT)
+    getOffers: getOffers(OFFERS_COUNT),
+    times: times
   };
 })();
