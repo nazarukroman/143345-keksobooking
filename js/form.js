@@ -60,7 +60,6 @@
       title.removeAttribute('style');
     }
   };
-  priceInput.addEventListener('invalid', priceInputInvalidHandler);
 
   /**
    * В поле "Адрес" записываем координаты главной метки
@@ -89,6 +88,7 @@
     element.min = value;
   };
   window.synchronizeFields(accomondationType, priceInput, accomondationTypes, accomondationPrices, syncValueWithMin);
+  priceInput.addEventListener('invalid', priceInputInvalidHandler);
 
   var roomNumber = document.querySelector('#room_number');
   var roomCapacity = document.querySelector('#capacity');
