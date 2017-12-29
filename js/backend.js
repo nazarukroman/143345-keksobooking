@@ -18,7 +18,7 @@
     xhr.send(data);
   };
 
-  var download = function (onLoad, test, onError) {
+  var download = function (onLoad, onError) {
     var URL = 'https://js.dump.academy/keksobooking/data';
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -26,7 +26,7 @@
     xhr.open('GET', URL);
 
     xhr.addEventListener('load', function () {
-      onLoad(xhr.response, test);
+      onLoad(xhr.response);
     })
 
     xhr.addEventListener('error', function () {

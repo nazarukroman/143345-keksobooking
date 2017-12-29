@@ -5,6 +5,12 @@
   var mapPins = document.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
 
+  var onLoad = function (offers) {
+    window.offersObject = offers;
+
+    window.pin.getPinsFragment(offersObject);
+  };
+
   /**
    * Функция перетаскивания главной метки
    * @param  {[event]} evt [событие]
@@ -67,10 +73,10 @@
       upEvt.preventDefault();
 
       map.classList.remove('map--faded');
-      // window.pin.getPinsFragment();
-      window.backend.download(window.pin.getPinsFragment);
       window.form.removeDisabledFieldset();
       window.form.noticeForm.classList.remove('notice__form--disabled');
+
+      window.backend.download(onLoad);
 
       document.removeEventListener('mousemove', mainPinMouseMoveHandler);
       document.removeEventListener('mouseup', mainPinMouseupHandler);

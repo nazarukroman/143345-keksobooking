@@ -66,8 +66,7 @@
    */
   var pinClickHandler = function (evt) {
     var dataId = event.currentTarget.getAttribute('data-id');
-    window.backend.download(window.card.renderAdSection, dataId);
-    // window.card.renderAdSection(dataId);
+    window.card.renderAdSection(offersObject, dataId);
     evt.currentTarget.classList.add('map__pin--active');
   };
 

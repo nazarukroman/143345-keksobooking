@@ -96,6 +96,21 @@
   var guests = ['1', '2', '3', '0'];
   window.synchronizeFields(roomNumber, roomCapacity, rooms, guests, syncValues);
 
+  var onLoad = function (offers) {
+    console.log('completed');
+  };
+
+  var onError = function (errorMassage)  {
+    console.log(errorMassage);
+  };
+
+  var formSubmitHandler = function (evt) {
+    evt.preventDefault();
+    window.backend.upload(new FormData(noticeForm), onLoad, onError);
+  };
+
+  noticeForm.addEventListener('submit', formSubmitHandler);
+
   window.form = {
     removeDisabledFieldset: removeDisabledFieldset,
     noticeForm: noticeForm,
