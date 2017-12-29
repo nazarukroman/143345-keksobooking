@@ -25,14 +25,26 @@
     pinClickHandler(evt);
   };
 
-  var getPinsFragment = function () {
+  // var getPinsFragment = function () {
+  //   var fragment = document.createDocumentFragment();
+  //   var mapPins = document.querySelector('.map__pins');
+  //   *
+  //    * Записываем все метки во fragment
+     
+  //   for (var i = 0; i < window.data.getOffers.length; i++) {
+  //     fragment.appendChild(renderPoints(window.data.getOffers[i], i));
+  //   }
+  //   mapPins.appendChild(fragment);
+  // };
+
+  var getPinsFragment = function (offers) {
     var fragment = document.createDocumentFragment();
     var mapPins = document.querySelector('.map__pins');
     /**
      * Записываем все метки во fragment
      */
-    for (var i = 0; i < window.data.getOffers.length; i++) {
-      fragment.appendChild(renderPoints(window.data.getOffers[i], i));
+    for (var i = 0; i < offers.length; i++) {
+      fragment.appendChild(renderPoints(offers[i], i));
     }
     mapPins.appendChild(fragment);
   };
@@ -54,7 +66,8 @@
    */
   var pinClickHandler = function (evt) {
     var dataId = event.currentTarget.getAttribute('data-id');
-    window.card.renderAdSection(dataId);
+    window.backend.download(window.card.renderAdSection, dataId);
+    // window.card.renderAdSection(dataId);
     evt.currentTarget.classList.add('map__pin--active');
   };
 

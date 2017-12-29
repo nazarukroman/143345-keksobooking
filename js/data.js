@@ -53,10 +53,6 @@
 
   /**
    * [Глобальная функция, которая заполняет массив данными]
-   * @return {[array]} [Массив с данными об объявлениях]
-   */
-  /**
-   * [Глобальная функция, которая заполняет массив данными]
    * @param  {[number]} offersCount [Количество объявлений]
    * @return {[array]} [Массив с данными об объявлениях]
    */
@@ -70,6 +66,7 @@
   
   window.data = {
     getOffers: getOffers(OFFERS_COUNT),
-    times: times
+    times: times,
+    typesRusMap: typesRusMap
   };
 })();
