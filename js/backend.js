@@ -8,7 +8,7 @@
 
     xhr.addEventListener('load', function () {
       onLoad(xhr.response);
-    })
+    });
 
     xhr.addEventListener('error', function () {
       onError('There is some ERROR');
@@ -27,7 +27,7 @@
 
     xhr.addEventListener('load', function () {
       onLoad(xhr.response);
-    })
+    });
 
     xhr.addEventListener('error', function () {
       onError('There is some ERROR');
@@ -39,5 +39,5 @@
   window.backend = {
     upload: upload,
     download: download
-  }
+  };
 })();

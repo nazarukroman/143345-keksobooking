@@ -2,7 +2,6 @@
 
 (function () {
   var map = document.querySelector('.map');
-  var mapPins = document.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
 
   var onLoad = function (offers) {
