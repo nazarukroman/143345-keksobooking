@@ -4,6 +4,16 @@
   var noticeForm = document.querySelector('.notice__form');
   var formFieldset = noticeForm.querySelectorAll('fieldset');
   /** 
+   * Добавляем атрибут disabled для полей формы
+   */
+  var addDisabledFieldset = function () {
+    for (var i = 0; i < formFieldset.length; i++) {
+      formFieldset[i].setAttribute('disabled', 'disabled');
+    }
+  };
+  addDisabledFieldset();
+
+  /** 
    * Удаляем атрибут disabled с полей формы
    */
   var removeDisabledFieldset = function () {
@@ -34,35 +44,35 @@
    */
   title.addEventListener('invalid', titleInvalidHandler);
 
-  var timeIn = document.querySelector('#timein');
-  var timeOut = document.querySelector('#timeout');
+  // var timeIn = document.querySelector('#timein');
+  // var timeOut = document.querySelector('#timeout');
 
 
-  /**
-   * Функция, при изменении селекта Время заезда, селект Время выезда становится таким же
-   * @param  {[number]} timeInCount [Число обозначающее количество индексов в селекте]
-   */
-  var timeInChangeHandler = function () {
-    timeOut.options[timeIn.options.selectedIndex].selected = true;
-  };
+  // /**
+  //  * Функция, при изменении селекта Время заезда, селект Время выезда становится таким же
+  //  * @param  {[number]} timeInCount [Число обозначающее количество индексов в селекте]
+  //  */
+  // var timeInChangeHandler = function () {
+  //   timeOut.options[timeIn.options.selectedIndex].selected = true;
+  // };
 
-  /**
-   * Функция, при изменении селекта Время выезда, селект Время заезда становится таким же
-   * @param  {[number]} timeOutCount [Число обозначающее количество индексов в селекте]
-   */
-  var timeOutChangeHandler = function () {
-    timeIn.options[timeOut.options.selectedIndex].selected = true;
-  };
+  // *
+  //  * Функция, при изменении селекта Время выезда, селект Время заезда становится таким же
+  //  * @param  {[number]} timeOutCount [Число обозначающее количество индексов в селекте]
+   
+  // var timeOutChangeHandler = function () {
+  //   timeIn.options[timeOut.options.selectedIndex].selected = true;
+  // };
 
-  /**
-   * Обработчик события – изменение селекта Время заезда
-   */
-  timeIn.addEventListener('change', timeInChangeHandler);
+  // /**
+  //  * Обработчик события – изменение селекта Время заезда
+  //  */
+  // timeIn.addEventListener('change', timeInChangeHandler);
 
-  /**
-   * Обработчик события – изменение селекта Время выезда
-   */
-  timeOut.addEventListener('change', timeOutChangeHandler);
+  // /**
+  //  * Обработчик события – изменение селекта Время выезда
+  //  */
+  // timeOut.addEventListener('change', timeOutChangeHandler);
 
   var accomondationType = document.querySelector('#type');
   var priceInput = document.querySelector('#price');
