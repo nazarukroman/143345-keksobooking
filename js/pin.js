@@ -13,7 +13,6 @@
     mapPoint.style.left = secondAdObject.location.x + 'px';
     mapPoint.style.top = secondAdObject.location.y + 'px';
     mapPoint.querySelector('img').src = secondAdObject.author.avatar;
-
     mapPoint.setAttribute('data-id', count);
 
     mapPoint.addEventListener('click', mapPointClickHandler);
@@ -28,13 +27,14 @@
 
   var getPinsFragment = function () {
     var fragment = document.createDocumentFragment();
+    var mapPins = document.querySelector('.map__pins');
     /**
      * Записываем все метки во fragment
      */
     for (var i = 0; i < window.data.getOffers.length; i++) {
       fragment.appendChild(renderPoints(window.data.getOffers[i], i));
     }
-    return fragment;
+    mapPins.appendChild(fragment);
   };
 
   /**
@@ -59,7 +59,7 @@
   };
 
   window.pin = {
-    getPinsFragment: getPinsFragment(),
+    getPinsFragment: getPinsFragment,
     activePins: activePins
   };
 })();

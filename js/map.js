@@ -67,7 +67,7 @@
       upEvt.preventDefault();
 
       map.classList.remove('map--faded');
-      mapPins.appendChild(window.pin.getPinsFragment);
+      window.pin.getPinsFragment();
       window.form.removeDisabledFieldset();
       window.form.noticeForm.classList.remove('notice__form--disabled');
 

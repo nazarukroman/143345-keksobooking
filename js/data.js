@@ -67,7 +67,7 @@
     }
     return offersArray;
   };
-
+  
   window.data = {
     getOffers: getOffers(OFFERS_COUNT),
     times: times
