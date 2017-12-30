@@ -100,7 +100,7 @@
     // console.log('completed');
   };
 
-  var onError = function (errorMassage) {
+  var onError = function () {
     // console.log(errorMassage);
   };
 

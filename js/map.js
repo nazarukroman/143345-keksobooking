@@ -7,7 +7,7 @@
   var onLoad = function (offers) {
     window.offersObject = offers;
 
-    window.pin.getPinsFragment(offersObject);
+    window.pin.getPinsFragment(window.offersObject);
   };
 
   /**

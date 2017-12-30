@@ -35,7 +35,7 @@
       fragment.appendChild(renderPoints(offers[i], i));
     }
 
-    mapPins.appendChild(fragment);
+    window.mapPins.appendChild(fragment);
     window.mapPin = document.querySelectorAll('.map__pin');
   };
 

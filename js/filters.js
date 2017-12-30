@@ -46,7 +46,7 @@
 
   var filtersChangeHandlers = function () {
     for (var j = 0; j < window.mapPin.length; j++) {
-      mapPins.removeChild(window.mapPin[j]);
+      window.mapPins.removeChild(window.mapPin[j]);
     }
 
     var newData = filterData(window.offersObject, filters);
@@ -101,5 +101,5 @@
 
   window.filters = {
     filters: filters,
-  }
+  };
 })();
