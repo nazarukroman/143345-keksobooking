@@ -15,28 +15,46 @@
   var housingGuests = mapFilters.querySelector('#housing-guests');
   var housingFeatures = Array.from(document.querySelectorAll('#housing-features input'));
 
-  var housingTypeChangeHandler = function (evt) {
-    var selectedValue = evt.currentTarget[evt.currentTarget.selectedIndex].value;
+  var filterData = function (offers, filtersObj) {
+    var newData = offersElements.filters(function (item) {
 
-    filters.type = selectedValue;
+    });
+
+    return newData.slice(0, 4);
+  };
+
+  var filtersChangeHandlers = function () {
+    for (var j = 0; j < window.pin.mapPin.length; j++) {
+      mapPins.removeChild(window.pin.mapPin[j]);
+    }
+
+    var newData = filterData(window.offersObject, filters);
+
+    window.pin.getPinsFragment(newData);
+  };
+
+  var housingTypeChangeHandler = function (evt) {
+    filters.type = evt.target.value;
+
+    filtersChangeHandlers();
   };
 
   var housingPriceChangeHandler = function (evt) {
-    var selectedValue = evt.currentTarget[evt.currentTarget.selectedIndex].value;
+    filters.price = evt.target.value;
 
-    filters.price = selectedValue;
+    filtersChangeHandlers();
   };
 
   var housingRoomsChangeHandler = function (evt) {
-    var selectedValue = evt.currentTarget[evt.currentTarget.selectedIndex].value;
+    filters.rooms = evt.target.value;
 
-    filters.rooms = selectedValue;
+    filtersChangeHandlers();
   };
 
   var housingGuestsChangeHandler = function (evt) {
-    var selectedValue = evt.currentTarget[evt.currentTarget.selectedIndex].value;
+    filters.rooms = evt.target.value;
 
-    filters.rooms = selectedValue;
+    filtersChangeHandlers();
   };
 
   var selectFeatures = function () {

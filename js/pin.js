@@ -24,11 +24,10 @@
     activePins();
     pinClickHandler(evt);
   };
+  var mapPins = document.querySelector('.map__pins');
+  var mapPin = mapPins.querySelectorAll('.map__pin');
   var getPinsFragment = function (offers) {
     var fragment = document.createDocumentFragment();
-    var mapPins = document.querySelector('.map__pins');
-    var onePin = mapPins.querySelector('.map__pin');
-    var mapPin = mapPins.querySelectorAll('.map__pin');
     // var MAX_PINS_COUNT = 5;
     /**
      * Записываем все метки во fragment
@@ -36,11 +35,7 @@
     for (var i = 0; i < offers.length; i++) {
       fragment.appendChild(renderPoints(offers[i], i));
     }
-    if (mapPins.contains(onePin)) {
-      for (var j = 0; j < mapPin.length; j++) {
-        mapPins.removeChild(mapPin[j]);
-      }
-    }
+
     mapPins.appendChild(fragment);
   };
 
@@ -76,6 +71,8 @@
   window.pin = {
     getPinsFragment: getPinsFragment,
     activePins: activePins,
-    updatePins: updatePins
+    updatePins: updatePins,
+    mapPins: mapPins,
+    mapPin: mapPin
   };
 })();
