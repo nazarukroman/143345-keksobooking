@@ -43,13 +43,13 @@
     return advertNode;
   };
 
-  var renderAdSection = function (offers, count) {
+  var renderAdSection = function (count) {
     var filterContainer = document.querySelector('.map__filters-container');
     var card = mapSection.querySelector('.map__card');
     if (mapSection.contains(card)) {
-      mapSection.replaceChild(getAdvert(offers[count]), card);
+      mapSection.replaceChild(getAdvert(offersObject[count]), card);
     } else {
-      mapSection.insertBefore(getAdvert(offers[count]), filterContainer);
+      mapSection.insertBefore(getAdvert(offersObject[count]), filterContainer);
     }
     popupCloseHandlers();
   };

@@ -24,14 +24,14 @@
     activePins();
     pinClickHandler(evt);
   };
-  var getPinsFragment = function (offersObject) {
+  var getPinsFragment = function (offers) {
     var fragment = document.createDocumentFragment();
     var mapPins = document.querySelector('.map__pins');
     /**
      * Записываем все метки во fragment
      */
     for (var i = 0; i < offersObject.length; i++) {
-      fragment.appendChild(renderPoints(offersObject[i], i));
+      fragment.appendChild(renderPoints(offers[i], i));
     }
     mapPins.appendChild(fragment);
   };
@@ -52,9 +52,9 @@
    * @param  {[event]} evt [Событие]
    * @param  {[object]} offersObject [Объект с данными с сервера]
    */
-  var pinClickHandler = function (evt, offersObject) {
+  var pinClickHandler = function (evt) {
     var dataId = event.currentTarget.getAttribute('data-id');
-    window.card.renderAdSection(offersObject, dataId);
+    window.card.renderAdSection(dataId);
     evt.currentTarget.classList.add('map__pin--active');
   };
 

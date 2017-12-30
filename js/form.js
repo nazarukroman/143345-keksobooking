@@ -105,8 +105,8 @@
   };
 
   var formSubmitHandler = function (evt) {
-    evt.preventDefault();
     window.backend.upload(new FormData(noticeForm), onLoad, onError);
+    evt.preventDefault();
   };
 
   noticeForm.addEventListener('submit', formSubmitHandler);
