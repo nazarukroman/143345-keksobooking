@@ -27,6 +27,7 @@
   var getPinsFragment = function (offers) {
     var fragment = document.createDocumentFragment();
     var mapPins = document.querySelector('.map__pins');
+    var onePin = mapPins.querySelector('.map__pin');
     var mapPin = mapPins.querySelectorAll('.map__pin');
     // var MAX_PINS_COUNT = 5;
     /**
@@ -36,14 +37,12 @@
       fragment.appendChild(renderPoints(offers[i], i));
     }
 debugger;
-    if (mapPins.classList.contains('map__pin')) {
+    if (mapPins.contains(onePin)) {
       for (var i = 0; i < mapPin.length; i++) {
         mapPins.removeChild(mapPin[i]);
       }
-      mapPins.appendChild(fragment);
-    } else {
-      mapPins.appendChild(fragment);
     }
+    mapPins.appendChild(fragment);
   };
 
   var updatePins = function (newVal) {
