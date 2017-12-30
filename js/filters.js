@@ -13,7 +13,7 @@
   var housingPrice = mapFilters.querySelector('#housing-price');
   var housingRooms = mapFilters.querySelector('#housing-rooms');
   var housingGuests = mapFilters.querySelector('#housing-guests');
-  var housingFeatures = mapFilters.querySelector('#housing-features');
+  var housingFeatures = Array.from(document.querySelectorAll('#housing-features input'));
 
   var housingTypeChangeHandler = function (evt) {
     var selectedValue = evt.currentTarget[evt.currentTarget.selectedIndex].value;
@@ -39,19 +39,26 @@
     filters.rooms = selectedValue;
   };
 
-  var housingFeaturesChangeHandler = function (evt) {
-    var checkedValues = [];
-    evt.currentTarget[evt.currentTarget.selectedIndex].value;
-
-    filters.rooms = selectedValue;
+  var selectFeatures = function () {
+    housingFeatures.reduce(function (accumulator, item) {
+      if (item.checked === true) {
+        accumulator.push(item.value);
+      }
+      return accumulator;
+    }, []);
   };
+
+  housingFeatures.forEach(function (item) {
+    item.addEventListener('change', function () {
+      filters.features = selectFeatures();
+    });
+  });
 
 
   housingType.addEventListener('change', housingTypeChangeHandler);
   housingPrice.addEventListener('change', housingPriceChangeHandler);
   housingRooms.addEventListener('change', housingRoomsChangeHandler);
   housingGuests.addEventListener('change', housingGuestsChangeHandler);
-  housingFeatures.addEventListener('change', housingFeaturesChangeHandler);
 
   window.filters = {
     filters: filters,
