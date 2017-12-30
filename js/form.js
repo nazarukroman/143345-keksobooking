@@ -97,11 +97,11 @@
   window.synchronizeFields(roomNumber, roomCapacity, rooms, guests, syncValues);
 
   var onLoad = function () {
-    console.log('completed');
+    // console.log('completed');
   };
 
-  var onError = function (errorMassage) {
-    console.log(errorMassage);
+  var onError = function () {
+    // console.log(errorMassage);
   };
 
   var formSubmitHandler = function (evt) {
@@ -114,6 +114,6 @@
   window.form = {
     removeDisabledFieldset: removeDisabledFieldset,
     noticeForm: noticeForm,
-    setAddress: setAddress
+    setAddress: setAddress,
   };
 })();
