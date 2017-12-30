@@ -24,8 +24,8 @@
   };
 
   var filtersChangeHandlers = function () {
-    for (var j = 0; j < window.pin.mapPin.length; j++) {
-      mapPins.removeChild(window.pin.mapPin[j]);
+    for (var j = 0; j < window.mapPin.length; j++) {
+      mapPins.removeChild(window.mapPin[j]);
     }
 
     var newData = filterData(window.offersObject, filters);
@@ -58,6 +58,7 @@
   };
 
   var selectFeatures = function () {
+    debugger;
     housingFeatures.reduce(function (accumulator, item) {
       if (item.checked === true) {
         accumulator.push(item.value);
