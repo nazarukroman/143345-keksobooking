@@ -10,12 +10,6 @@
       onLoad(xhr.response);
     });
 
-    // if (xhr.status === 200) {
-    //   onSuccess(xhr.response);
-    // } else {
-    //   onError('Неизвестный статус: ' + xhr.status + ' ' + xhr.statusText);
-    // }
-
     xhr.addEventListener('error', function () {
       onError('There is some ERROR');
     });

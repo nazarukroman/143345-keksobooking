@@ -96,7 +96,7 @@
   var guests = ['1', '2', '3', '0'];
   window.synchronizeFields(roomNumber, roomCapacity, rooms, guests, syncValues);
 
-  var onLoad = function (offers) {
+  var onLoad = function () {
     console.log('completed');
   };
 
