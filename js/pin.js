@@ -28,11 +28,12 @@
   var getPinsFragment = function (offers) {
     window.mapPins = document.querySelector('.map__pins');
     var fragment = document.createDocumentFragment();
+    var shortOffers = offers.slice(0, 5);
     /**
      * Записываем все метки во fragment
      */
-    for (var i = 0; i < offers.length; i++) {
-      fragment.appendChild(renderPoints(offers[i], i));
+    for (var i = 0; i < shortOffers.length; i++) {
+      fragment.appendChild(renderPoints(shortOffers[i], i));
     }
 
     window.mapPins.appendChild(fragment);
