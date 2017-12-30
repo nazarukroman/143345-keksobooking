@@ -13,7 +13,6 @@
     mapPoint.style.left = secondAdObject.location.x + 'px';
     mapPoint.style.top = secondAdObject.location.y + 'px';
     mapPoint.querySelector('img').src = secondAdObject.author.avatar;
-
     mapPoint.setAttribute('data-id', count);
 
     mapPoint.addEventListener('click', mapPointClickHandler);
@@ -25,16 +24,16 @@
     activePins();
     pinClickHandler(evt);
   };
-
-  var getPinsFragment = function () {
+  var getPinsFragment = function (offers) {
     var fragment = document.createDocumentFragment();
+    var mapPins = document.querySelector('.map__pins');
     /**
      * Записываем все метки во fragment
      */
-    for (var i = 0; i < window.data.getOffers.length; i++) {
-      fragment.appendChild(renderPoints(window.data.getOffers[i], i));
+    for (var i = 0; i < offersObject.length; i++) {
+      fragment.appendChild(renderPoints(offers[i], i));
     }
-    return fragment;
+    mapPins.appendChild(fragment);
   };
 
   /**
@@ -51,6 +50,7 @@
    * Находим дата-атрибут у метки на которую нажали
    * Затем добавляется или заменяется объявление с таким же дата-атрибутом на карту (функция renderAdSection)
    * @param  {[event]} evt [Событие]
+   * @param  {[object]} offersObject [Объект с данными с сервера]
    */
   var pinClickHandler = function (evt) {
     var dataId = event.currentTarget.getAttribute('data-id');
@@ -59,7 +59,7 @@
   };
 
   window.pin = {
-    getPinsFragment: getPinsFragment(),
+    getPinsFragment: getPinsFragment,
     activePins: activePins
   };
 })();

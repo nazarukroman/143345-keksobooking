@@ -3,16 +3,16 @@
 (function () {
   /**
    * Генерируем спиоск удобств(features) из объекта similarAdverts.offer.features
-   * @param  {[object]} firstAdObject [объект с индексом]
+   * @param  {[object]} offerObject [объект с индексом]
    * @return {[fragment]}               [Фрагмент с новым списком]
    */
-  var getFeaturesHtml = function (firstAdObject) {
+  var getFeaturesHtml = function (offerObject) {
     var listFragment = document.createDocumentFragment();
     var newList = document.createElement('ul');
     newList.className = 'popup__features';
-    for (var i = 0; i < firstAdObject.offer.features.length; i++) {
+    for (var i = 0; i < offerObject.offer.features.length; i++) {
       var newElementList = document.createElement('li');
-      newElementList.className = 'feature ' + 'feature--' + firstAdObject.offer.features[i];
+      newElementList.className = 'feature ' + 'feature--' + offerObject.offer.features[i];
       listFragment.appendChild(newElementList);
     }
     newList.appendChild(listFragment);
@@ -27,6 +27,8 @@
    */
   var getAdvert = function (offerObject) {
     var advertNode = adTemplate.cloneNode(true);
+    // window.accomondationType = offerObject.offer.type;
+    // var typesMap = window.data.typesRusMap;
 
     advertNode.querySelector('.popup__avatar').src = offerObject.author.avatar;
     advertNode.querySelector('h3').textContent = offerObject.offer.title;
@@ -41,18 +43,13 @@
     return advertNode;
   };
 
-  /**
-   * Функция вставляет объявление в html
-   * Если какое-то объявление уже вставлено, то заменяет его на другое объявление, которое вызвал пользователь
-   * @param  {[number]} count [индекс]
-   */
   var renderAdSection = function (count) {
     var filterContainer = document.querySelector('.map__filters-container');
     var card = mapSection.querySelector('.map__card');
     if (mapSection.contains(card)) {
-      mapSection.replaceChild(getAdvert(window.data.getOffers[count]), card);
+      mapSection.replaceChild(getAdvert(offersObject[count]), card);
     } else {
-      mapSection.insertBefore(getAdvert(window.data.getOffers[count]), filterContainer);
+      mapSection.insertBefore(getAdvert(offersObject[count]), filterContainer);
     }
     popupCloseHandlers();
   };
@@ -89,5 +86,6 @@
   window.card = {
     renderAdSection: renderAdSection,
     closePopupButtonKeydownHandler: closePopupButtonKeydownHandler,
+    getAdvert: getAdvert
   };
 })();

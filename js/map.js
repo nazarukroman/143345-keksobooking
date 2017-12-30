@@ -2,8 +2,13 @@
 
 (function () {
   var map = document.querySelector('.map');
-  var mapPins = document.querySelector('.map__pins');
   var mainPin = document.querySelector('.map__pin--main');
+
+  var onLoad = function (offers) {
+    window.offersObject = offers;
+
+    window.pin.getPinsFragment(offersObject);
+  };
 
   /**
    * Функция перетаскивания главной метки
@@ -67,9 +72,10 @@
       upEvt.preventDefault();
 
       map.classList.remove('map--faded');
-      mapPins.appendChild(window.pin.getPinsFragment);
       window.form.removeDisabledFieldset();
       window.form.noticeForm.classList.remove('notice__form--disabled');
+
+      window.backend.download(onLoad);
 
       document.removeEventListener('mousemove', mainPinMouseMoveHandler);
       document.removeEventListener('mouseup', mainPinMouseupHandler);
