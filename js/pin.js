@@ -8,11 +8,11 @@
    * @param  {[number]} count          [Индекс]
    * @return {[type]}                [Сгенерированные метки]
    */
-  var renderPoints = function (secondAdObject, count) {
+  var renderPoints = function (offerObject, count) {
     var mapPoint = buttonTemplate.cloneNode(true);
-    mapPoint.style.left = secondAdObject.location.x + 'px';
-    mapPoint.style.top = secondAdObject.location.y + 'px';
-    mapPoint.querySelector('img').src = secondAdObject.author.avatar;
+    mapPoint.style.left = offerObject.location.x + 'px';
+    mapPoint.style.top = offerObject.location.y + 'px';
+    mapPoint.querySelector('img').src = offerObject.author.avatar;
     mapPoint.setAttribute('data-id', count);
 
     mapPoint.addEventListener('click', mapPointClickHandler);
@@ -27,13 +27,31 @@
   var getPinsFragment = function (offers) {
     var fragment = document.createDocumentFragment();
     var mapPins = document.querySelector('.map__pins');
+    var mapPin = mapPins.querySelectorAll('.map__pin');
+    // var MAX_PINS_COUNT = 5;
     /**
      * Записываем все метки во fragment
      */
-    for (var i = 0; i < offersObject.length; i++) {
+    for (var i = 0; i < offers.length; i++) {
       fragment.appendChild(renderPoints(offers[i], i));
     }
-    mapPins.appendChild(fragment);
+debugger;
+    if (mapPins.classList.contains('map__pin')) {
+      for (var i = 0; i < mapPin.length; i++) {
+        mapPins.removeChild(mapPin[i]);
+      }
+      mapPins.appendChild(fragment);
+    } else {
+      mapPins.appendChild(fragment);
+    }
+  };
+
+  var updatePins = function (newVal) {
+   var newType = offersObject.filter(function (obj) {
+      return obj.offer.type === newVal;
+    });
+    // console.log(newType);
+    getPinsFragment(newType);
   };
 
   /**
@@ -53,13 +71,14 @@
    * @param  {[object]} offersObject [Объект с данными с сервера]
    */
   var pinClickHandler = function (evt) {
-    var dataId = event.currentTarget.getAttribute('data-id');
+    var dataId = evt.currentTarget.getAttribute('data-id');
     window.card.renderAdSection(dataId);
     evt.currentTarget.classList.add('map__pin--active');
   };
 
   window.pin = {
     getPinsFragment: getPinsFragment,
-    activePins: activePins
+    activePins: activePins,
+    updatePins: updatePins
   };
 })();

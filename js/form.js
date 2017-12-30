@@ -111,9 +111,25 @@
 
   noticeForm.addEventListener('submit', formSubmitHandler);
 
+  var mapFilters = document.querySelector('.map__filters');
+  var housingType = mapFilters.querySelector('#housing-type');
+  var housingPrice = mapFilters.querySelector('#housing-price');
+  var housingRooms = mapFilters.querySelector('#housing-rooms');
+  var housingGuests = mapFilters.querySelector('#housing-guests');
+  var housingFeatures = mapFilters.querySelector('#housing-features');
+
+  var housingTypeChangeHandler = function (evt) {
+    var selectedValue = evt.currentTarget[evt.currentTarget.selectedIndex].value;
+
+    window.pin.updatePins(selectedValue);
+  };
+
+  housingType.addEventListener('change', housingTypeChangeHandler);
+
   window.form = {
     removeDisabledFieldset: removeDisabledFieldset,
     noticeForm: noticeForm,
-    setAddress: setAddress
+    setAddress: setAddress,
+    housingType: housingType
   };
 })();
