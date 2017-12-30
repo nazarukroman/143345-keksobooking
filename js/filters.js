@@ -17,7 +17,6 @@
 
   var filterData = function (offers, filtersObj) {
     var newData = offers.filter(function (item) {
-
       var filteredByFeatures = true;
 
       for (var i = 0; i < filtersObj.features.length; i++) {
@@ -79,12 +78,13 @@
   };
 
   var selectFeatures = function () {
-    housingFeatures.reduce(function (accumulator, item) {
+    var accum = [];
+    housingFeatures.map(function (item) {
       if (item.checked === true) {
-        accumulator.push(item.value);
+        accum.push(item.value);
       }
-      return accumulator;
-    }, []);
+    });
+    return accum;
   };
 
   housingFeatures.forEach(function (item) {
