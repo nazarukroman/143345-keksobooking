@@ -96,14 +96,6 @@
   var guests = ['1', '2', '3', '0'];
   window.synchronizeFields(roomNumber, roomCapacity, rooms, guests, syncValues);
 
-  var onLoad = function () {
-    // console.log('completed');
-  };
-
-  var onError = function () {
-    // console.log(errorMassage);
-  };
-
   var formSubmitHandler = function (evt) {
     window.backend.upload(new FormData(noticeForm), onLoad, onError);
     evt.preventDefault();
