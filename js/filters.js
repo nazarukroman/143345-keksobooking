@@ -16,7 +16,28 @@
   var housingFeatures = Array.from(document.querySelectorAll('#housing-features input'));
 
   var filterData = function (offers, filtersObj) {
-    var newData = offersElements.filters(function (item) {
+    var newData = offers.filter(function (item) {
+
+      var filteredByFeatures = true;
+
+      for (var i = 0; i < filtersObj.features.length; i++) {
+        if (item.offer.features.indexOf(filtersObj.features[i]) === -1) {
+          filteredByFeatures = false;
+          break;
+        }
+      }
+      var filteredByPrice = (
+        (item.offer.price < 10000 && filtersObj.price === 'low') ||
+        (item.offer.price >= 10000 && item.offer.price <= 50000 && filtersObj.price === 'middle') ||
+        (item.offer.price > 50000 && filtersObj.price === 'high') ||
+        filtersObj.price === 'any');
+
+
+      return ((item.offer.type === filtersObj.type || filtersObj.type === 'any') &&
+        filteredByPrice &&
+        (item.offer.rooms.toString() === filtersObj.rooms || filtersObj.rooms === 'any') &&
+        (item.offer.guests.toString() === filtersObj.guests || filtersObj.guests === 'any') &&
+        filteredByFeatures);
 
     });
 
@@ -58,7 +79,6 @@
   };
 
   var selectFeatures = function () {
-    debugger;
     housingFeatures.reduce(function (accumulator, item) {
       if (item.checked === true) {
         accumulator.push(item.value);
