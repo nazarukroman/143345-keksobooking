@@ -47,9 +47,9 @@
     var filterContainer = document.querySelector('.map__filters-container');
     var card = mapSection.querySelector('.map__card');
     if (mapSection.contains(card)) {
-      mapSection.replaceChild(getAdvert(offersObject[count]), card);
+      mapSection.replaceChild(getAdvert(window.offersObject[count]), card);
     } else {
-      mapSection.insertBefore(getAdvert(offersObject[count]), filterContainer);
+      mapSection.insertBefore(getAdvert(window.offersObject[count]), filterContainer);
     }
     popupCloseHandlers();
   };

@@ -4,7 +4,7 @@
   var buttonTemplate = document.querySelector('template').content.querySelector('.map__pin');
   /**
    * [Отрисовываем метки на карте + устанавливаем обработчик событий для нажатия по метке]
-   * @param  {[object]} secondAdObject [Объект с индексом]
+   * @param  {[object]} offerObject [Объект с индексом]
    * @param  {[number]} count          [Индекс]
    * @return {[type]}                [Сгенерированные метки]
    */
@@ -36,20 +36,18 @@
     for (var i = 0; i < offers.length; i++) {
       fragment.appendChild(renderPoints(offers[i], i));
     }
-debugger;
     if (mapPins.contains(onePin)) {
-      for (var i = 0; i < mapPin.length; i++) {
-        mapPins.removeChild(mapPin[i]);
+      for (var j = 0; j < mapPin.length; j++) {
+        mapPins.removeChild(mapPin[j]);
       }
     }
     mapPins.appendChild(fragment);
   };
 
   var updatePins = function (newVal) {
-   var newType = offersObject.filter(function (obj) {
+    var newType = window.offersObject.filter(function (obj) {
       return obj.offer.type === newVal;
     });
-    // console.log(newType);
     getPinsFragment(newType);
   };
 
