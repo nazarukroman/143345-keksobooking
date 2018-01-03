@@ -3,11 +3,6 @@
 (function () {
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
-
-  var onLoad = function (offers) {
-    window.offersObject = offers;
-  };
-
   /**
    * Функция перетаскивания главной метки
    * @param  {[event]} evt [событие]

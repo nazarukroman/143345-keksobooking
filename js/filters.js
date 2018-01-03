@@ -81,6 +81,10 @@
     filtersChangeHandlers();
   };
 
+  /**
+   * [Проверяем какой элемент из списка выран(checked) записываем его в массив filters.features]
+   * @return {[type]} [description]
+   */
   var selectFeatures = function () {
     var accum = [];
     housingFeatures.map(function (item) {

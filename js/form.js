@@ -97,9 +97,15 @@
   window.synchronizeFields(roomNumber, roomCapacity, rooms, guests, syncValues);
 
   var onLoad = function () {
-
   };
 
+  var onError = function () {
+  };
+
+  /**
+   * Обработчик на отправку данных формы
+   * @param  {[event]} evt [Событие]
+   */
   var formSubmitHandler = function (evt) {
     window.backend.upload(new FormData(noticeForm), onLoad, onError);
     evt.preventDefault();

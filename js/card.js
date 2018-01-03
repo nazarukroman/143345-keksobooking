@@ -1,9 +1,10 @@
 'use strict';
 
 (function () {
+  var ESC_KEYCODE = 27;
   /**
-   * Генерируем спиоск удобств(features) из объекта similarAdverts.offer.features
-   * @param  {[object]} offerObject [объект с индексом]
+   * Генерируем спиоск удобств(features)
+   * @param  {[object]} offerObject [объект пришедший из getPinsFragment()]
    * @return {[fragment]}               [Фрагмент с новым списком]
    */
   var getFeaturesHtml = function (offerObject) {
@@ -22,7 +23,7 @@
   var adTemplate = document.querySelector('template').content.querySelector('.map__card');
   /**
    * Заполняем объявление на карте
-   * @param  {[object]} offerObject [Объект с индексом]
+   * @param  {[object]} offerObject [Нужный объект из getPinsFragment]
    * @return {[type]}               [Сгенерированные объявления]
    */
   var getAdvert = function (offerObject) {
@@ -43,10 +44,15 @@
     return advertNode;
   };
 
+  /**
+   * Вставляем в html карточку объявления
+   * если карточка уже есть, то заменяем ее
+   * Вешаем обработчик события на закрытие карточки
+   * @param  {[type]} offerObject [Нужный объект из getPinsFragment]
+   */
   var renderAdSection = function (offerObject) {
     var filterContainer = document.querySelector('.map__filters-container');
     var card = mapSection.querySelector('.map__card');
-    var shortObject = window.data.getShortObject();
 
     if (mapSection.contains(card)) {
       mapSection.replaceChild(getAdvert(offerObject), card);
@@ -78,7 +84,6 @@
     window.pin.activePins();
   };
 
-  var ESC_KEYCODE = 27;
   var closePopupButtonKeydownHandler = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       closePopup();
