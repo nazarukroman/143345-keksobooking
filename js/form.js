@@ -8,7 +8,7 @@
    */
   var addDisabledFieldset = function () {
     for (var i = 0; i < formFieldset.length; i++) {
-      formFieldset[i].setAttribute('disabled', 'disabled');
+      formFieldset[i].disabled = true;
     }
   };
   addDisabledFieldset();
@@ -97,11 +97,7 @@
   window.synchronizeFields(roomNumber, roomCapacity, rooms, guests, syncValues);
 
   var onLoad = function () {
-    console.log('completed');
-  };
 
-  var onError = function (errorMassage) {
-    console.log(errorMassage);
   };
 
   var formSubmitHandler = function (evt) {
@@ -114,6 +110,6 @@
   window.form = {
     removeDisabledFieldset: removeDisabledFieldset,
     noticeForm: noticeForm,
-    setAddress: setAddress
+    setAddress: setAddress,
   };
 })();

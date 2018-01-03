@@ -6,8 +6,6 @@
 
   var onLoad = function (offers) {
     window.offersObject = offers;
-
-    window.pin.getPinsFragment(offersObject);
   };
 
   /**
@@ -72,10 +70,9 @@
       upEvt.preventDefault();
 
       map.classList.remove('map--faded');
-      window.form.removeDisabledFieldset();
+      window.pin.getPinsFragment(window.data.getShortObject());
       window.form.noticeForm.classList.remove('notice__form--disabled');
-
-      window.backend.download(onLoad);
+      window.form.removeDisabledFieldset();
 
       document.removeEventListener('mousemove', mainPinMouseMoveHandler);
       document.removeEventListener('mouseup', mainPinMouseupHandler);
