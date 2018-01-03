@@ -97,7 +97,7 @@
   window.synchronizeFields(roomNumber, roomCapacity, rooms, guests, syncValues);
 
   var onLoad = function () {
-
+    
   };
 
   var formSubmitHandler = function (evt) {
