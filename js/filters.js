@@ -44,6 +44,9 @@
   };
 
   var filtersChangeHandlers = function () {
+    var card = document.querySelector('.map__card');
+    card.classList.add('hidden');
+
     for (var j = 0; j < window.mapPin.length; j++) {
       if (!window.mapPin[j].classList.contains('map__pin--main')) {
         window.mapPins.removeChild(window.mapPin[j]);
