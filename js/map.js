@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var MIN_COORD_X = 100;
+  var MAX_COORD_X = 1100;
+  var MIN_COORD_Y = 100;
+  var MAX_COORD_Y = 600;
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
   /**
@@ -9,6 +13,24 @@
    */
   var mainPinMousedownHandler = function (evt) {
     evt.preventDefault();
+
+    var setLimitCoordX = function (pinX) {
+      if (pinX < MIN_COORD_X) {
+        return MIN_COORD_X;
+      } else if (pinX > MAX_COORD_X) {
+        return MAX_COORD_X;
+      }
+      return pinX
+    };
+
+    var setLimitCoordY = function (pinY) {
+      if (pinY < MIN_COORD_Y) {
+        return MIN_COORD_Y;
+      } else if (pinY > MAX_COORD_Y) {
+        return MAX_COORD_Y;
+      }
+      return pinY
+    };
 
     var startCoords = {
       x: evt.clientX,
@@ -28,27 +50,24 @@
         y: moveEvt.clientY
       };
 
-      var MIN_COORD_Y = 100;
-      var MAX_COORD_Y = 500;
+      // if (startCoords.y < MIN_COORD_Y) {
+      //   mainPin.style.top = MIN_COORD_Y + 'px';
+      // } else if (startCoords.y > MAX_COORD_Y) {
+      //   mainPin.style.top = MAX_COORD_Y + 'px';
+      // } else {
+      //   mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+      // }
 
-      if (startCoords.y < MIN_COORD_Y) {
-        mainPin.style.top = MIN_COORD_Y + 'px';
-      } else if (startCoords.y > MAX_COORD_Y) {
-        mainPin.style.top = MAX_COORD_Y + 'px';
-      } else {
-        mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-      }
+      // if (startCoords.x < MIN_COORD_X) {
+      //   mainPin.style.left = MIN_COORD_X + 'px';
+      // } else if (startCoords.x > MAX_COORD_X) {
+      //   mainPin.style.left = MAX_COORD_X + 'px';
+      // } else {
+      //   mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+      // }
 
-      var MIN_COORD_X = 100;
-      var MAX_COORD_X = 1100;
-
-      if (startCoords.x < MIN_COORD_X) {
-        mainPin.style.left = MIN_COORD_X + 'px';
-      } else if (startCoords.x > MAX_COORD_X) {
-        mainPin.style.left = MAX_COORD_X + 'px';
-      } else {
-        mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
-      }
+      mainPin.style.top = setLimitCoordY(mainPin.offsetTop - shift.y) + 'px';
+      mainPin.style.left = setLimitCoordX(mainPin.offsetLeft - shift.x) + 'px';
 
       window.form.setAddress(mainPin.style.top, mainPin.style.left);
     };
