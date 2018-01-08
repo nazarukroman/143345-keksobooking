@@ -18,7 +18,7 @@
     });
 
     xhr.addEventListener('error', function () {
-      onError('There is some ERROR');
+      onError();
     });
 
     xhr.open('POST', URL);

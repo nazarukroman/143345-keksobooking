@@ -3,6 +3,18 @@
 (function () {
   var noticeForm = document.querySelector('.notice__form');
   var formFieldset = noticeForm.querySelectorAll('fieldset');
+  var title = document.querySelector('#title');
+  var addressInput = document.querySelector('#address');
+  var timeIn = document.querySelector('#timein');
+  var timeOut = document.querySelector('#timeout');
+  var accomondationType = document.querySelector('#type');
+  var priceInput = document.querySelector('#price');
+  var accomondationTypes = ['bungalo', 'flat', 'house', 'palace'];
+  var accomondationPrices = [0, 1000, 5000, 10000];
+  var roomNumber = document.querySelector('#room_number');
+  var roomCapacity = document.querySelector('#capacity');
+  var descriptionField = document.querySelector('#description');
+  var featuresFields = noticeForm.querySelectorAll('.features input[type=checkbox]');
   /** 
    * Добавляем атрибут disabled для полей формы
    */
@@ -21,8 +33,6 @@
       formFieldset[i].removeAttribute('disabled');
     }
   };
-
-  var title = document.querySelector('#title');
 
   var titleInvalidHandler = function () {
     if (title.validity.tooShort) {
@@ -67,39 +77,82 @@
    * @param {[number]} yCoord [Координата Y]
    */
   var setAddress = function (xCoord, yCoord) {
-    var addressInput = document.querySelector('#address');
     var addressString = 'x: ' + xCoord + ', ' + 'y: ' + yCoord;
 
     addressInput.setAttribute('value', addressString);
   };
 
-  var timeIn = document.querySelector('#timein');
-  var timeOut = document.querySelector('#timeout');
   var syncValues = function (element, value) {
     element.value = value;
   };
   window.synchronizeFields(timeIn, timeOut, window.data.times, window.data.times, syncValues);
 
-  var accomondationType = document.querySelector('#type');
-  var priceInput = document.querySelector('#price');
-  var accomondationTypes = ['bungalo', 'flat', 'house', 'palace'];
-  var accomondationPrices = [0, 1000, 5000, 10000];
   var syncValueWithMin = function (element, value) {
     element.min = value;
   };
   window.synchronizeFields(accomondationType, priceInput, accomondationTypes, accomondationPrices, syncValueWithMin);
   priceInput.addEventListener('invalid', priceInputInvalidHandler);
 
-  var roomNumber = document.querySelector('#room_number');
-  var roomCapacity = document.querySelector('#capacity');
-  var rooms = ['1', '2', '3', '100'];
-  var guests = ['1', '2', '3', '0'];
-  window.synchronizeFields(roomNumber, roomCapacity, rooms, guests, syncValues);
-
-  var onLoad = function () {
+  /**
+   * Делаем селекты неактивными
+   */
+  var disableRoomSelects = function () {
+    for (var i = 0; i < roomCapacity.length; i++) {
+      roomCapacity[i].disabled = true;
+    }
+  };
+  /**
+   * Проверяем выбранное значение
+   * Запускаем функцию, которая делает неактивными селекты
+   * Если количество человек равно выбранному количеству комнат, селект становится активным
+   * Если количество человек меньше или равно выбранному количеству комнат, но больше нуля, то селект становится активным
+   * @param  {[evt]} evt [Событие]
+   */
+  var roomNumberChangeHandler = function (evt) {
+    disableRoomSelects();
+    var choosenValue = (evt.target.value === '100') ? '0' : evt.target.value;
+    for (var i = 0; i < roomCapacity.length; i++) {
+      if (roomCapacity[i].value === choosenValue) {
+        roomCapacity[i].disabled = false;
+      }
+      if (roomCapacity[i].value <= choosenValue && roomCapacity[i].value > 0) {
+        roomCapacity[i].disabled = false;
+      }
+    }
   };
 
-  var onError = function () {
+  roomNumber.addEventListener('change', roomNumberChangeHandler);
+
+  var onLoad = function () {
+    syncValues(title, '');
+    syncValues(accomondationType, 'flat');
+    syncValues(priceInput, '1000');
+    syncValues(timeIn, '12:00');
+    syncValues(timeOut, '12:00');
+    roomNumber.selectedIndex = 0;
+    roomCapacity.selectedIndex = 2;
+    featuresFields.forEach(function (elem) {
+      elem.checked = false;
+    });
+    syncValues(descriptionField, '');
+  };
+
+  var onError = function (message) {
+    var fragment = document.createDocumentFragment();
+    var div = document.createElement('div');
+    div.classList.add('error-message');
+    div.style = 'z-index: 10; width: 300px; height: 200px; top: 50%; left: 50%; transform: translate(-50%, -50%);';
+    var p = document.createElement('p');
+    var p1 = document.createElement('p');
+    p.textContent = 'Что-то пошло не так';
+    p1.textContentt = message;
+    div.appendChild('p');
+    div.appendChild('p1');
+    fragment.appendChild(div);
+    window.map.mapSection.appendChild(fragment);
+    window.setTimeout(function () {
+      document.querySelector('.error-message').style = 'display: none;';
+    }, 3000);
   };
 
   /**

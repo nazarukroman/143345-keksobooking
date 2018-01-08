@@ -20,7 +20,7 @@
       } else if (pinX > MAX_COORD_X) {
         return MAX_COORD_X;
       }
-      return pinX
+      return pinX;
     };
 
     var setLimitCoordY = function (pinY) {
@@ -29,7 +29,7 @@
       } else if (pinY > MAX_COORD_Y) {
         return MAX_COORD_Y;
       }
-      return pinY
+      return pinY;
     };
 
     var startCoords = {
@@ -49,22 +49,6 @@
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
-
-      // if (startCoords.y < MIN_COORD_Y) {
-      //   mainPin.style.top = MIN_COORD_Y + 'px';
-      // } else if (startCoords.y > MAX_COORD_Y) {
-      //   mainPin.style.top = MAX_COORD_Y + 'px';
-      // } else {
-      //   mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-      // }
-
-      // if (startCoords.x < MIN_COORD_X) {
-      //   mainPin.style.left = MIN_COORD_X + 'px';
-      // } else if (startCoords.x > MAX_COORD_X) {
-      //   mainPin.style.left = MAX_COORD_X + 'px';
-      // } else {
-      //   mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
-      // }
 
       mainPin.style.top = setLimitCoordY(mainPin.offsetTop - shift.y) + 'px';
       mainPin.style.left = setLimitCoordX(mainPin.offsetLeft - shift.x) + 'px';
@@ -97,4 +81,8 @@
   };
 
   mainPin.addEventListener('mousedown', mainPinMousedownHandler);
+
+  window.map = {
+    mapSection: map,
+  };
 })();
