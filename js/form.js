@@ -46,13 +46,14 @@
       title.removeAttribute('style');
     }
   };
+  title.addEventListener('invalid', titleInvalidHandler);
   /**
    * Обработчик событий для "Заголовка объявления"
    * Если сообщение сообщение слишком короткое, длинное или не значение пропущено
    * То у инпута border становится красным
    * Если полве валидное, то удаляется атрибут style
    */
-  title.addEventListener('invalid', titleInvalidHandler);
+  // title.addEventListener('invalid', titleInvalidHandler);
 
   /**
    * Если число слишком маленькое, большое или вводится не число
@@ -61,13 +62,13 @@
    */
   var priceInputInvalidHandler = function () {
     if (priceInput.validity.rangeUnderflow) {
-      title.setAttribute('style', 'border-color: red');
+      priceInput.setAttribute('style', 'border-color: red');
     } else if (priceInput.validity.rangeOverflow) {
-      title.setAttribute('style', 'border-color: red');
+      priceInput.setAttribute('style', 'border-color: red');
     } else if (priceInput.validity.typeMismatch) {
-      title.setAttribute('style', 'border-color: red');
+      priceInput.setAttribute('style', 'border-color: red');
     } else {
-      title.removeAttribute('style');
+      priceInput.removeAttribute('style');
     }
   };
 
@@ -123,7 +124,23 @@
 
   roomNumber.addEventListener('change', roomNumberChangeHandler);
 
+  /**
+   * Функция при успешной загрузке формы выводит сообщение и сбрасывает форму к дефолтным значениям.
+   */
   var onLoad = function () {
+    var fragment = document.createDocumentFragment();
+    var div = document.createElement('div');
+    div.classList.add('success-message');
+    div.style = 'position: fixed; z-index: 10; width: 300px; height: 50px; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #6EBC72; color: #ffffff; text-align: center; border: 2px solid white';
+    var p = document.createElement('p');
+    p.textContent = 'Данные успешно отправлены';
+    div.appendChild(p);
+    fragment.appendChild(div);
+    window.map.mapSection.appendChild(fragment);
+    window.setTimeout(function () {
+      document.querySelector('.success-message').style = 'display: none;';
+    }, 3000);
+
     syncValues(title, '');
     syncValues(accomondationType, 'flat');
     syncValues(priceInput, '1000');
@@ -137,17 +154,21 @@
     syncValues(descriptionField, '');
   };
 
+  /**
+   * Функция при неудачной отправки данных из формы выводит сообщение
+   * @param  {[string]} message [Статус ошибки]
+   */
   var onError = function (message) {
     var fragment = document.createDocumentFragment();
     var div = document.createElement('div');
     div.classList.add('error-message');
-    div.style = 'z-index: 10; width: 300px; height: 200px; top: 50%; left: 50%; transform: translate(-50%, -50%);';
+    div.style = 'position: fixed; z-index: 10; width: 200px; height: 80px; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #F4655E; color: #ffffff; text-align: center; border: 2px solid white';
     var p = document.createElement('p');
     var p1 = document.createElement('p');
     p.textContent = 'Что-то пошло не так';
-    p1.textContentt = message;
-    div.appendChild('p');
-    div.appendChild('p1');
+    p1.textContent = message;
+    div.appendChild(p);
+    div.appendChild(p1);
     fragment.appendChild(div);
     window.map.mapSection.appendChild(fragment);
     window.setTimeout(function () {
