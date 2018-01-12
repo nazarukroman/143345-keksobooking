@@ -1,12 +1,17 @@
 'use strict';
 
 (function () {
-  var MIN_COORD_X = 100;
-  var MAX_COORD_X = 1100;
-  var MIN_COORD_Y = 100;
-  var MAX_COORD_Y = 600;
+  var MIN_COORD = {
+    X: 100,
+    Y: 100
+  };
+  var MAX_COORD = {
+    X: 1100,
+    Y: 500
+  };
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
+  var firstMove = true;
   /**
    * Функция перетаскивания главной метки
    * @param  {[event]} evt [событие]
@@ -15,19 +20,19 @@
     evt.preventDefault();
 
     var setLimitCoordX = function (pinX) {
-      if (pinX < MIN_COORD_X) {
-        return MIN_COORD_X;
-      } else if (pinX > MAX_COORD_X) {
-        return MAX_COORD_X;
+      if (pinX < MIN_COORD.X) {
+        return MIN_COORD.X;
+      } else if (pinX > MAX_COORD.X) {
+        return MAX_COORD.X;
       }
       return pinX;
     };
 
     var setLimitCoordY = function (pinY) {
-      if (pinY < MIN_COORD_Y) {
-        return MIN_COORD_Y;
-      } else if (pinY > MAX_COORD_Y) {
-        return MAX_COORD_Y;
+      if (pinY < MIN_COORD.Y) {
+        return MIN_COORD.Y;
+      } else if (pinY > MAX_COORD.Y) {
+        return MAX_COORD.Y;
       }
       return pinY;
     };
@@ -53,7 +58,7 @@
       mainPin.style.top = setLimitCoordY(mainPin.offsetTop - shift.y) + 'px';
       mainPin.style.left = setLimitCoordX(mainPin.offsetLeft - shift.x) + 'px';
 
-      window.form.setAddress(mainPin.style.top, mainPin.style.left);
+      window.form.setAddress(mainPin.style.left, mainPin.style.top);
     };
 
     /**
@@ -68,7 +73,10 @@
       upEvt.preventDefault();
 
       map.classList.remove('map--faded');
-      window.pin.getPinsFragment(window.data.getShortObject());
+      if (firstMove) {
+        window.pin.getPinsFragment(window.data.getShortObject());
+        firstMove = false;
+      }
       window.form.noticeForm.classList.remove('notice__form--disabled');
       window.form.removeDisabledFieldset();
 

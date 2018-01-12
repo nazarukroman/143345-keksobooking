@@ -7,6 +7,7 @@
     bungalo: 'Бунгало'
   };
   var times = ['12:00', '13:00', '14:00'];
+  var PIN_LIMIT_COUNT = 5;
 
   /**
    * [Получаем данные с сервера]
@@ -23,7 +24,7 @@
    * @return {[object]} [Объект с сервера]
    */
   var getShortObject = function () {
-    var shortOffers = window.offersObject.slice(0, 5);
+    var shortOffers = window.offersObject.slice(0, PIN_LIMIT_COUNT);
     return shortOffers;
   };
 

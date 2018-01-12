@@ -28,8 +28,6 @@
    */
   var getAdvert = function (offerObject) {
     var advertNode = adTemplate.cloneNode(true);
-    // window.accomondationType = offerObject.offer.type;
-    // var typesMap = window.data.typesRusMap;
 
     advertNode.querySelector('.popup__avatar').src = offerObject.author.avatar;
     advertNode.querySelector('h3').textContent = offerObject.offer.title;

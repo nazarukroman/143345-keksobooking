@@ -82,7 +82,7 @@
   };
 
   /**
-   * [Проверяем какой элемент из списка выран(checked) записываем его в массив filters.features]
+   * [Проверяем какой элемент из списка выбран(checked) записываем его в массив filters.features]
    * @return {[type]} [description]
    */
   var selectFeatures = function () {
@@ -98,6 +98,7 @@
   housingFeatures.forEach(function (item) {
     item.addEventListener('change', function () {
       filters.features = selectFeatures();
+      filtersChangeHandlers();
     });
   });
 

@@ -130,9 +130,9 @@
   var onLoad = function () {
     var fragment = document.createDocumentFragment();
     var div = document.createElement('div');
+    var p = document.createElement('p');
     div.classList.add('success-message');
     div.style = 'position: fixed; z-index: 10; width: 300px; height: 50px; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #6EBC72; color: #ffffff; text-align: center; border: 2px solid white';
-    var p = document.createElement('p');
     p.textContent = 'Данные успешно отправлены';
     div.appendChild(p);
     fragment.appendChild(div);
@@ -161,10 +161,10 @@
   var onError = function (message) {
     var fragment = document.createDocumentFragment();
     var div = document.createElement('div');
-    div.classList.add('error-message');
-    div.style = 'position: fixed; z-index: 10; width: 200px; height: 80px; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #F4655E; color: #ffffff; text-align: center; border: 2px solid white';
     var p = document.createElement('p');
     var p1 = document.createElement('p');
+    div.classList.add('error-message');
+    div.style = 'position: fixed; z-index: 10; width: 200px; height: 80px; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #F4655E; color: #ffffff; text-align: center; border: 2px solid white';
     p.textContent = 'Что-то пошло не так';
     p1.textContent = message;
     div.appendChild(p);

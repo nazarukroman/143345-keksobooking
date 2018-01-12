@@ -2,6 +2,8 @@
 
 (function () {
   var SERVER_URL = 'https://js.dump.academy/keksobooking';
+  var TIMEOUT_TIME = 10000;
+  var SUCCESS_STATUS = 200;
   /**
    * Функция для запроса на сервер
    * @param  {[function]} onLoad  [Функция, которая сработает при удачной загрузки]
@@ -13,7 +15,7 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === SUCCESS_STATUS) {
         onLoad(xhr.response);
       } else {
         onError('Статус ошибки: ' + xhr.status + xhr.statusText);
@@ -28,7 +30,7 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = TIMEOUT_TIME;
 
     return xhr;
   };
