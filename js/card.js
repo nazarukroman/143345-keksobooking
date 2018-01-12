@@ -35,7 +35,7 @@
     advertNode.querySelector('h3').textContent = offerObject.offer.title;
     advertNode.querySelector('small').textContent = offerObject.offer.address;
     advertNode.querySelector('.popup__price').textContent = offerObject.offer.price + ' ₽/ночь';
-    advertNode.querySelector('h4').textContent = offerObject.offer.type;
+    advertNode.querySelector('h4').textContent = typesMap.offerType;
     advertNode.querySelectorAll('p')[2].textContent = offerObject.offer.rooms + ' комнаты для ' + offerObject.offer.guests + ' гостей';
     advertNode.querySelectorAll('p')[3].textContent = 'Заезд после ' + offerObject.offer.checkin + ' , выезд до ' + offerObject.offer.checkout;
     advertNode.querySelectorAll('p')[4].textContent = offerObject.offer.description;
