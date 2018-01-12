@@ -30,8 +30,6 @@
 
   window.data = {
     times: times,
-    typesRusMap: typesRusMap,
-    onLoad: onLoad,
     getShortObject: getShortObject
   };
 })();
