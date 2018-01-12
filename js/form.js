@@ -191,5 +191,6 @@
     removeDisabledFieldset: removeDisabledFieldset,
     noticeForm: noticeForm,
     setAddress: setAddress,
+    errorMessage: onError
   };
 })();

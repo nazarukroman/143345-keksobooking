@@ -9,6 +9,11 @@
     X: 1100,
     Y: 500
   };
+  var pinParameters = {
+    HEIGHT: 62,
+    WIDTH: 62,
+    PIN_ARROW: 22
+  };
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
   var firstMove = true;
@@ -55,10 +60,13 @@
         y: moveEvt.clientY
       };
 
-      mainPin.style.top = setLimitCoordY(mainPin.offsetTop - shift.y) + 'px';
-      mainPin.style.left = setLimitCoordX(mainPin.offsetLeft - shift.x) + 'px';
+      var topCoord = mainPin.offsetTop - shift.y;
+      var leftCoord = mainPin.offsetLeft - shift.x;
 
-      window.form.setAddress(mainPin.style.left, mainPin.style.top);
+      mainPin.style.top = setLimitCoordY(topCoord) + 'px';
+      mainPin.style.left = setLimitCoordX(leftCoord) + 'px';
+
+      window.form.setAddress(leftCoord, topCoord);
     };
 
     /**

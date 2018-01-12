@@ -14,6 +14,10 @@
   var housingRooms = mapFilters.querySelector('#housing-rooms');
   var housingGuests = mapFilters.querySelector('#housing-guests');
   var housingFeatures = Array.from(document.querySelectorAll('#housing-features input'));
+  var priceParams = {
+    LOW: 10000,
+    HIGH: 50000
+  };
 
   var filterData = function (offers, filtersObj) {
     var newData = offers.filter(function (item) {
