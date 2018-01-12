@@ -92,7 +92,5 @@
 
   window.card = {
     renderAdSection: renderAdSection,
-    closePopupButtonKeydownHandler: closePopupButtonKeydownHandler,
-    getAdvert: getAdvert
   };
 })();

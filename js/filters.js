@@ -19,37 +19,61 @@
     HIGH: 50000
   };
 
-  var filterData = function (offers, filtersObj) {
-    var newData = offers.filter(function (item) {
-      var filteredByFeatures = true;
+  /**
+   * Функция - фильтр цены
+   * @param  {[array]} data [Массив с объектами полученный с сервера]
+   * @return {[boolean]} 
+   */
+  var filteredByPrice = function (data) {
+    switch (housingPrice.value) {
+      case 'low':
+        return data.offer.price < priceParams.LOW;
+      case 'middle':
+        return data.offer.price >= priceParams.LOW && data.offer.price <= priceParams.HIGH;
+      case 'high':
+        return data.offer.price > priceParams.HIGH;
+    }
+    return false;
+  };
 
-      for (var i = 0; i < filtersObj.features.length; i++) {
-        if (item.offer.features.indexOf(filtersObj.features[i]) === -1) {
-          filteredByFeatures = false;
-          break;
-        }
+  /**
+   * Функция – фильтр удобств
+   * @param  {[array]} data [Массив с объектами полученный с сервера]
+   * @return {[boolean]} 
+   */
+  var filteredByFeatures = function (data) {
+    for (var i = 0; i < filters.features.length; i++) {
+      if (data.offer.features.indexOf(filters.features[i]) === -1) {
+        return false;
       }
-      var filteredByPrice = (
-        (item.offer.price < 10000 && filtersObj.price === 'low') ||
-        (item.offer.price >= 10000 && item.offer.price <= 50000 && filtersObj.price === 'middle') ||
-        (item.offer.price > 50000 && filtersObj.price === 'high') ||
-        filtersObj.price === 'any');
+    }
+    return true;
+  };
 
+  var filterData = function (data) {
+    return ((housingType.value === 'any') ? true : (data.offer.type === housingType.value)) &&
+    ((housingPrice.value === 'any') ? true : filteredByPrice(data)) &&
+    ((housingRooms.value === 'any') ? true : (data.offer.rooms === parseInt(housingRooms.value, 10))) &&
+    ((housingGuests.value === 'any') ? true : (data.offer.guests === parseInt(housingGuests.value, 10))) &&
+    filteredByFeatures(data);
+  };
 
-      return ((item.offer.type === filtersObj.type || filtersObj.type === 'any') &&
-        filteredByPrice &&
-        (item.offer.rooms.toString() === filtersObj.rooms || filtersObj.rooms === 'any') &&
-        (item.offer.guests.toString() === filtersObj.guests || filtersObj.guests === 'any') &&
-        filteredByFeatures);
+  /**
+   * Получаем новый отфильтрованный массив длинною pinLimits
+   * @param  {[array]} data [Массив с объектами полученный с сервера]
+   * @return {[array]}      [отфильтрованный массив длинною pinLimits]
+   */
+  var getFilteredData = function (data) {
+    var newData = data.filter(filterData);
 
-    });
-
-    return newData.slice(0, 4);
+    return newData.slice(0, window.data.pinLimits);
   };
 
   var filtersChangeHandlers = function () {
     var card = document.querySelector('.map__card');
-    card.classList.add('hidden');
+    if (window.map.mapSection.contains(card)) {
+      card.classList.add('hidden');
+    }
 
     for (var j = 0; j < window.mapPin.length; j++) {
       if (!window.mapPin[j].classList.contains('map__pin--main')) {
@@ -57,8 +81,8 @@
       }
     }
 
-    var filterDataObject = filterData(window.offersObject, filters);
-    window.pin.getPinsFragment(filterDataObject);
+    var filterDataObject = getFilteredData(window.offersObject);
+    window.debounce(window.pin.getPinsFragment(filterDataObject));
   };
 
   var housingTypeChangeHandler = function (evt) {
@@ -111,8 +135,4 @@
   housingPrice.addEventListener('change', housingPriceChangeHandler);
   housingRooms.addEventListener('change', housingRoomsChangeHandler);
   housingGuests.addEventListener('change', housingGuestsChangeHandler);
-
-  window.filters = {
-    filters: filters
-  };
 })();

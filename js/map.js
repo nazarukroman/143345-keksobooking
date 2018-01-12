@@ -9,11 +9,6 @@
     X: 1100,
     Y: 500
   };
-  var pinParameters = {
-    HEIGHT: 62,
-    WIDTH: 62,
-    PIN_ARROW: 22
-  };
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
   var firstMove = true;

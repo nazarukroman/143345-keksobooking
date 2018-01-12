@@ -17,7 +17,7 @@
     window.offersObject = offers;
   };
 
-  window.backend.download(onLoad);
+  window.backend.download(onLoad, window.utils.onError);
 
   /**
    * [Делаем из объекта с сервера объект длинной 5]
@@ -31,6 +31,7 @@
   window.data = {
     times: times,
     typesRusMap: typesRusMap,
-    getShortObject: getShortObject
+    getShortObject: getShortObject,
+    pinLimits: PIN_LIMIT_COUNT
   };
 })();
