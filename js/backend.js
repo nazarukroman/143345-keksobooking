@@ -1,43 +1,52 @@
 'use strict';
 
 (function () {
-  var upload = function (data, onLoad, onError) {
-    var URL = 'https://js.dump.academy/keksobooking';
+  var SERVER_URL = 'https://js.dump.academy/keksobooking';
+  var TIMEOUT_TIME = 10000;
+  var SUCCESS_STATUS = 200;
+  /**
+   * Функция для запроса на сервер
+   * @param  {[function]} onLoad  [Функция, которая сработает при удачной загрузки]
+   * @param  {[function]} onError [Функция, которая сработает при неудачной загрузке]
+   * @return {[XMLHttpRequest]} [XMLHttpRequest]
+   */
+  var setup = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      onLoad(xhr.response);
+      if (xhr.status === SUCCESS_STATUS) {
+        onLoad(xhr.response);
+      } else {
+        onError('Статус ошибки: ' + xhr.status + xhr.statusText);
+      }
     });
 
     xhr.addEventListener('error', function () {
-      onError('There is some ERROR');
+      onError('Произошла ошибка соединения');
     });
 
-    xhr.open('POST', URL);
-    xhr.send(data);
-  };
-
-  var download = function (onLoad, onError) {
-    var URL = 'https://js.dump.academy/keksobooking/data';
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-
-    xhr.open('GET', URL);
-
-    xhr.addEventListener('load', function () {
-      onLoad(xhr.response);
+    xhr.addEventListener('timeout', function () {
+      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.addEventListener('error', function () {
-      onError('There is some ERROR');
-    });
+    xhr.timeout = TIMEOUT_TIME;
 
-    xhr.send();
+    return xhr;
   };
 
   window.backend = {
-    upload: upload,
-    download: download
+    upload: function (data, onLoad, onError) {
+      var xhr = setup(onLoad, onError);
+
+      xhr.open('POST', SERVER_URL);
+      xhr.send(data);
+    },
+    download: function (onLoad, onError) {
+      var xhr = setup(onLoad, onError);
+
+      xhr.open('GET', SERVER_URL + '/data');
+      xhr.send();
+    }
   };
 })();

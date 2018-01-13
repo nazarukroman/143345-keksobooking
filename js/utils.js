@@ -1,54 +1,29 @@
 'use strict';
 
 (function () {
+  /**
+   * Функция создает попап с сообщением
+   * @param  {[string]} message [Сообщение об ошибке]
+   */
+  var onError = function (message) {
+    var fragment = document.createDocumentFragment();
+    var div = document.createElement('div');
+    var p = document.createElement('p');
+    var p1 = document.createElement('p');
+    div.classList.add('error-message');
+    div.style = 'position: fixed; z-index: 10; width: 200px; height: 80px; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #F4655E; color: #ffffff; text-align: center; border: 2px solid white';
+    p.textContent = 'Что-то пошло не так';
+    p1.textContent = message;
+    div.appendChild(p);
+    div.appendChild(p1);
+    fragment.appendChild(div);
+    window.map.mapSection.appendChild(fragment);
+    window.setTimeout(function () {
+      document.querySelector('.error-message').style = 'display: none;';
+    }, 3000);
+  };
 
-  window.untils = {
-    /**
-  	 * Находим случайное число из диапазона
-  	 * @method
-  	 * @param  {[number]} min [Минимальный диапазон]
-  	 * @param  {[number]} max [Максимальный диапазон]
-  	 * @return {[number]} [Случайное число]
-  	 */
-    getRandomNumber: function (min, max) {
-      return Math.round(min + Math.random() * (max + 1 - min));
-    },
-
-    /**
-     * Находим случайное значение из массива
-     * @method
-     * @param  {[array]} array [Массив из которого выбираем значение]
-     * @return {[string]} [Полученное значение из массива]
-     */
-    getRandomArrayValue: function (array) {
-      var rand = Math.floor(Math.random() * array.length);
-      var arrayValue = array[rand];
-      return arrayValue;
-    },
-
-    /**
-     * Находим массив случайной длины из массива features
-     * @param  {[array]} features [Входной массив]-
-     * @return {[array]} [Полученный массив]
-     */
-    getRandomFeatures: function (features) {
-      var newFeatures = features.slice(window.untils.getRandomNumber(0, features.length - 2));
-      return newFeatures;
-    },
-
-    /**
-     * Находим случайный адресс
-     * @param  {[number]} minX [Минимальная координата X]
-     * @param  {[number]} maxX [Максимальная координата X]
-     * @param  {[number]} minY [Минимальная координата Y]
-     * @param  {[number]} maxY [Максимальная координата Y]
-     * @return {[object]} [Возвращаем объект с координатами x, y]
-     */
-    getRandomAddress: function (minX, maxX, minY, maxY) {
-      return {
-        'x': window.untils.getRandomNumber(minX, maxX),
-        'y': window.untils.getRandomNumber(minY, maxY)
-      };
-    }
+  window.utils = {
+    onError: onError
   };
 })();
