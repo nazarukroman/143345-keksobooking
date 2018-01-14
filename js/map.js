@@ -11,11 +11,6 @@
     X: 900 - PIN_HALF_WIDTH,
     Y: 500 - PIN_HALF_HEIGHT
   };
-  var pinParameters = {
-    WIDTH: 62,
-    HEIGHT: 62,
-    PIN_ARROW: 22
-  };
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
   var firstMove = true;
