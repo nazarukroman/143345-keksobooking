@@ -3,6 +3,8 @@
 (function () {
   var noticeForm = document.querySelector('.notice__form');
   var formFieldset = noticeForm.querySelectorAll('fieldset');
+  var fileChooserAvatar = document.querySelector('#avatar');
+  var noticePreview = document.querySelector('.notice__preview img');
   var title = document.querySelector('#title');
   var addressInput = document.querySelector('#address');
   var timeIn = document.querySelector('#timein');
@@ -15,6 +17,9 @@
   var roomCapacity = document.querySelector('#capacity');
   var descriptionField = document.querySelector('#description');
   var featuresFields = noticeForm.querySelectorAll('.features input[type=checkbox]');
+  var fileChooserPhotos = document.querySelector('#images');
+  var photosContainer = document.querySelector('.form__photo-container');
+
   /** 
    * Добавляем атрибут disabled для полей формы
    */
@@ -33,6 +38,18 @@
       formFieldset[i].removeAttribute('disabled');
     }
   };
+
+  /**
+   * Хэндлер для загрузки аватара
+   * @param  {[string]} result [Картинка в base64]
+   */
+  var avatarClickHandler = function (result) {
+    noticePreview.src = result;
+  };
+  /**
+   * Обработчик события на загрузку аватарки
+   */
+  window.loadPhoto.setImage(fileChooserAvatar, avatarClickHandler);
 
   var titleInvalidHandler = function () {
     if (title.validity.tooShort) {
@@ -123,6 +140,22 @@
   };
 
   roomNumber.addEventListener('change', roomNumberChangeHandler);
+
+  /**
+   * Хэндлер для загрузки фотографий
+   * Вставляет img в html в блок form__photo-container
+   * @param  {[string]} result [Картинка в base64]
+   */
+  var photoClickHandler = function (result) {
+    var previewPhoto = document.createElement('img');
+    previewPhoto.src = result;
+    previewPhoto.style = 'max-width: 100px; max-height: 100px; margin-top: 10px;';
+    photosContainer.appendChild(previewPhoto);
+  };
+  /**
+   * Обработчик события на загрузку фотографий
+   */
+  window.loadPhoto.setImage(fileChooserPhotos, photoClickHandler);
 
   /**
    * Функция при успешной загрузке формы выводит сообщение и сбрасывает форму к дефолтным значениям.
