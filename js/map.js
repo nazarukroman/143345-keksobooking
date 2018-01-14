@@ -1,13 +1,20 @@
 'use strict';
 
 (function () {
+  var PIN_HALF_HEIGHT = 42;
+  var PIN_HALF_WIDTH = 31;
   var MIN_COORD = {
-    X: 100,
-    Y: 100
+    X: 300 - PIN_HALF_WIDTH,
+    Y: 100 - PIN_HALF_HEIGHT
   };
   var MAX_COORD = {
-    X: 1100,
-    Y: 500
+    X: 900 - PIN_HALF_WIDTH,
+    Y: 500 - PIN_HALF_HEIGHT
+  };
+  var pinParameters = {
+    WIDTH: 62,
+    HEIGHT: 62,
+    PIN_ARROW: 22
   };
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
@@ -18,24 +25,6 @@
    */
   var mainPinMousedownHandler = function (evt) {
     evt.preventDefault();
-
-    var setLimitCoordX = function (pinX) {
-      if (pinX < MIN_COORD.X) {
-        return MIN_COORD.X;
-      } else if (pinX > MAX_COORD.X) {
-        return MAX_COORD.X;
-      }
-      return pinX;
-    };
-
-    var setLimitCoordY = function (pinY) {
-      if (pinY < MIN_COORD.Y) {
-        return MIN_COORD.Y;
-      } else if (pinY > MAX_COORD.Y) {
-        return MAX_COORD.Y;
-      }
-      return pinY;
-    };
 
     var startCoords = {
       x: evt.clientX,
@@ -55,13 +44,27 @@
         y: moveEvt.clientY
       };
 
-      var topCoord = mainPin.offsetTop - shift.y;
-      var leftCoord = mainPin.offsetLeft - shift.x;
+      var coordinates = {
+        x: mainPin.offsetLeft - shift.x,
+        y: mainPin.offsetTop - shift.y
+      };
 
-      mainPin.style.top = setLimitCoordY(topCoord) + 'px';
-      mainPin.style.left = setLimitCoordX(leftCoord) + 'px';
+      if (coordinates.x < MIN_COORD.X) {
+        coordinates.x = MIN_COORD.X;
+      } else if (coordinates.x > MAX_COORD.X) {
+        coordinates.x = MAX_COORD.X;
+      }
 
-      window.form.setAddress(leftCoord, topCoord);
+      if (coordinates.y < MIN_COORD.Y) {
+        coordinates.y = MIN_COORD.Y;
+      } else if (coordinates.y > MAX_COORD.Y) {
+        coordinates.y = MAX_COORD.Y;
+      }
+
+      mainPin.style.top = coordinates.y + 'px';
+      mainPin.style.left = coordinates.x + 'px';
+
+      window.form.setAddress(coordinates.x, coordinates.y);
     };
 
     /**
